@@ -3,839 +3,472 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Edupanion — Evening Study Support</title>
+<title>Edupanion — Homework & Study Support for Classes 1–8</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lora:ital,wght@0,600;1,400&family=Noto+Sans+Kannada:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#1D9E75;--green-light:#E1F5EE;--green-mid:#5DCAA5;--green-dark:#0f5c42;
+  --amber:#F4A261;--amber-light:#FFF3E0;--text:#1a1a1a;--text-muted:#5a5a5a;
+  --surface:#faf9f6;--border:#e8e4da;--wa:#25D366;--white:#fff;--r:16px;
+}
+body{font-family:'Nunito',sans-serif;background:var(--surface);color:var(--text);line-height:1.65;overflow-x:hidden}
+body.lang-kn{font-family:'Noto Sans Kannada','Nunito',sans-serif}
+body.lang-hi{font-family:'Noto Sans Devanagari','Nunito',sans-serif}
 
-  :root {
-    --green: #1D9E75;
-    --green-light: #E1F5EE;
-    --green-mid: #5DCAA5;
-    --blue: #185FA5;
-    --blue-light: #E6F1FB;
-    --amber: #EF9F27;
-    --text: #1a1a1a;
-    --text-muted: #5a5a5a;
-    --text-light: #888;
-    --surface: #f9f8f5;
-    --border: #e8e4da;
-    --wa-green: #25D366;
-  }
+/* LANG BAR */
+.lang-bar{background:#1a2e22;display:flex;justify-content:center;gap:6px;padding:8px 5%;align-items:center}
+.lang-bar span{font-size:11px;color:rgba(255,255,255,0.4);margin-right:4px}
+.lang-btn{background:transparent;border:1.5px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);
+  padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
+.lang-btn:hover{border-color:var(--green-mid);color:var(--green-mid)}
+.lang-btn.active{background:var(--green);border-color:var(--green);color:#fff}
 
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: var(--surface);
-    color: var(--text);
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(250,249,246,.95);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-size:1.3rem;font-weight:900;color:var(--green);text-decoration:none}
+.nav-cta{background:var(--wa);color:#fff;border:none;padding:8px 18px;border-radius:20px;font-size:13px;
+  font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;text-decoration:none}
+.nav-cta:hover{background:#1ebe5a}
 
-  body.lang-kn { font-family: 'Noto Sans Kannada', 'Nunito', sans-serif; }
-  body.lang-hi { font-family: 'Noto Sans Devanagari', 'Nunito', sans-serif; }
+/* HERO */
+.hero{padding:60px 5% 48px;max-width:680px;margin:0 auto;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green-light);color:var(--green);
+  border-radius:20px;padding:5px 16px;font-size:12px;font-weight:800;margin-bottom:22px;letter-spacing:.5px;text-transform:uppercase}
+.hero h1{font-size:2.3rem;font-weight:900;line-height:1.2;letter-spacing:-.5px;margin-bottom:16px}
+.hero h1 em{font-family:'Lora',serif;font-style:italic;color:var(--green);font-weight:600}
+body.lang-kn .hero h1,body.lang-hi .hero h1{font-size:1.85rem}
+.hero-sub{font-size:1.02rem;color:var(--text-muted);margin-bottom:8px;line-height:1.75}
+.hero-kn{font-size:.93rem;color:var(--green);margin-bottom:28px;font-family:'Noto Sans Kannada',sans-serif;font-weight:600}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;align-items:center;margin-bottom:24px}
+.btn-wa{background:var(--wa);color:#fff;border:none;padding:15px 26px;border-radius:14px;font-size:15px;
+  font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px;text-decoration:none;
+  transition:transform .15s,box-shadow .15s;box-shadow:0 4px 18px rgba(37,211,102,.35)}
+.btn-wa:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,.4)}
+.btn-ghost{background:transparent;color:var(--text-muted);border:2px solid var(--border);padding:14px 22px;
+  border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;transition:all .2s}
+.btn-ghost:hover{border-color:var(--green);color:var(--green)}
+.trust-pills{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.trust-pill{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--text-muted)}
 
-  /* ── LANGUAGE SWITCHER ── */
-  .lang-bar {
-    background: #1a2e22;
-    display: flex; justify-content: center; gap: 6px;
-    padding: 8px 5%; align-items: center;
-  }
-  .lang-bar span { font-size: 11px; color: rgba(255,255,255,0.45); margin-right: 4px; letter-spacing: 0.5px; }
-  .lang-btn {
-    background: transparent; border: 1.5px solid rgba(255,255,255,0.2);
-    color: rgba(255,255,255,0.6); padding: 4px 14px; border-radius: 20px;
-    font-size: 12px; font-weight: 700; cursor: pointer;
-    font-family: inherit; transition: all 0.2s; letter-spacing: 0.3px;
-  }
-  .lang-btn:hover { border-color: var(--green-mid); color: var(--green-mid); }
-  .lang-btn.active {
-    background: var(--green); border-color: var(--green);
-    color: white;
-  }
+/* CHAT DEMO */
+.chat-wrap{padding:8px 5% 56px;max-width:480px;margin:0 auto}
+.chat-label{text-align:center;font-size:12px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.chat-win{background:#ECE5DD;border-radius:18px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.1)}
+.chat-bar{background:#075E54;color:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px}
+.chat-av{width:36px;height:36px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900}
+.chat-bar .cn{font-weight:700;font-size:14px}.chat-bar .cs{font-size:11px;opacity:.75}
+.chat-body{padding:16px 14px;display:flex;flex-direction:column;gap:10px}
+.bbl{max-width:82%;padding:10px 14px;border-radius:12px;font-size:13.5px;line-height:1.55;position:relative}
+.bbl.s{background:#fff;align-self:flex-start;border-top-left-radius:3px}
+.bbl.t{background:#DCF8C6;align-self:flex-end;border-top-right-radius:3px}
+.bbl-time{font-size:10px;color:#aaa;text-align:right;margin-top:4px}
+.bbl-who{font-size:10px;font-weight:800;color:var(--green);margin-bottom:3px}
 
-  /* ── NAV ── */
-  nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(249,248,245,0.94);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 5%;
-    display: flex; align-items: center; justify-content: space-between;
-    height: 60px;
-  }
-  .logo { font-size: 1.25rem; font-weight: 900; color: var(--green); letter-spacing: -0.5px; font-family: 'Nunito', sans-serif; }
-  .logo span { color: var(--text); }
-  .nav-cta {
-    background: var(--wa-green); color: white; border: none;
-    padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 700;
-    cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 6px;
-    text-decoration: none;
-  }
-  .nav-cta:hover { background: #1ebe5a; }
+/* SECTIONS */
+section{padding:64px 5%}
+.slbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--green);margin-bottom:10px}
+.stitle{font-size:1.85rem;font-weight:900;line-height:1.25;letter-spacing:-.3px;margin-bottom:14px}
+.ssub{font-size:1rem;color:var(--text-muted);max-width:560px;line-height:1.7}
+.shdr{margin-bottom:44px}.shdr.c{text-align:center}.shdr.c .ssub{margin:0 auto}
+body.lang-kn .stitle,body.lang-hi .stitle{font-size:1.5rem}
 
-  /* ── HERO ── */
-  .hero {
-    padding: 72px 5% 60px;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
-    max-width: 1100px; margin: 0 auto;
-  }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--green-light); color: var(--green); border-radius: 20px;
-    padding: 5px 14px; font-size: 12px; font-weight: 700; margin-bottom: 20px;
-    letter-spacing: 0.3px; text-transform: uppercase;
-  }
-  .hero h1 {
-    font-size: 2.5rem; font-weight: 900; line-height: 1.2;
-    letter-spacing: -0.5px; margin-bottom: 18px;
-  }
-  .hero h1 em {
-    font-family: 'Lora', serif; font-style: italic; font-weight: 600; color: var(--green);
-  }
-  body.lang-hi .hero h1, body.lang-kn .hero h1 { font-size: 2rem; letter-spacing: 0; }
-  .hero p { font-size: 1rem; color: var(--text-muted); margin-bottom: 28px; line-height: 1.75; max-width: 440px; }
-  .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
-  .btn-primary {
-    background: var(--wa-green); color: white; border: none;
-    padding: 14px 22px; border-radius: 12px; font-size: 14px; font-weight: 800;
-    cursor: pointer; font-family: inherit;
-    display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
-  }
-  .btn-primary:hover { background: #1ebe5a; transform: translateY(-1px); }
-  .btn-secondary {
-    background: transparent; color: var(--text-muted); border: 1.5px solid var(--border);
-    padding: 14px 22px; border-radius: 12px; font-size: 13px; font-weight: 700;
-    cursor: pointer; font-family: inherit; text-decoration: none; display: inline-block;
-  }
-  .btn-secondary:hover { border-color: var(--green); color: var(--green); }
-  .hero-trust { margin-top: 18px; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-light); }
-  .trust-dots { display: flex; }
-  .trust-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid white; background: var(--green-light); margin-right: -4px; }
+/* HOW IT WORKS */
+.how-sec{background:#fff}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:880px;margin:0 auto}
+.step{text-align:center;padding:32px 22px;background:var(--surface);border-radius:var(--r);border:2px solid var(--border);position:relative}
+.step-n{width:42px;height:42px;border-radius:50%;background:var(--green);color:#fff;font-size:17px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.step-ic{font-size:34px;margin-bottom:10px}
+.step h3{font-size:.97rem;font-weight:800;margin-bottom:8px}
+.step p{font-size:.88rem;color:var(--text-muted);line-height:1.6}
+.arr{position:absolute;right:-16px;top:50%;transform:translateY(-50%);font-size:22px;color:#ccc;z-index:1}
 
-  /* ── CHAT MOCK ── */
-  .hero-visual {
-    background: white; border-radius: 20px; border: 1.5px solid var(--border);
-    padding: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.06);
-  }
-  .chat-header {
-    display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
-    padding-bottom: 14px; border-bottom: 1px solid var(--border);
-  }
-  .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; font-size: 16px; }
-  .chat-name { font-size: 14px; font-weight: 800; font-family: 'Nunito', sans-serif; }
-  .chat-status { font-size: 11px; color: var(--green); font-weight: 600; }
-  .online-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; margin-right: 4px; }
-  .msg { margin-bottom: 10px; display: flex; flex-direction: column; }
-  .msg.student { align-items: flex-end; }
-  .msg.buddy { align-items: flex-start; }
-  .bubble { padding: 9px 13px; border-radius: 12px; font-size: 13px; max-width: 88%; line-height: 1.55; }
-  .student .bubble { background: #e2fce9; color: #1a2e22; border-bottom-right-radius: 4px; }
-  .buddy .bubble { background: #f2f2f2; color: var(--text); border-bottom-left-radius: 4px; }
-  .buddy .bubble strong { color: var(--green); font-weight: 800; }
-  .msg-time { font-size: 10px; color: var(--text-light); margin-top: 3px; font-family: 'Nunito', sans-serif; }
-  .typing { display: flex; align-items: center; gap: 4px; padding: 6px 10px; }
-  .typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--text-light); animation: bounce 1.2s infinite; }
-  .typing span:nth-child(2) { animation-delay: 0.2s; }
-  .typing span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-4px)} }
+/* CLASS CARDS */
+.cls-sec{background:var(--surface)}
+.cls-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;max-width:880px;margin:0 auto}
+.cls-card{border-radius:var(--r);padding:34px 30px;border:2px solid transparent;transition:box-shadow .2s}
+.cls-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.08)}
+.cls-card.jr{background:linear-gradient(135deg,#FFF8F0,#FFE8D6);border-color:#F4A261}
+.cls-card.sr{background:linear-gradient(135deg,#F0FBF5,var(--green-light));border-color:var(--green-mid)}
+.cls-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px}
+.cls-tag.jr{background:#F4A261;color:#fff}.cls-tag.sr{background:var(--green);color:#fff}
+.cls-card h3{font-size:1.45rem;font-weight:900;margin-bottom:5px}
+.cls-sub{font-size:.88rem;color:var(--text-muted);margin-bottom:20px}
+.flist{list-style:none;display:flex;flex-direction:column;gap:10px}
+.flist li{display:flex;align-items:flex-start;gap:9px;font-size:.9rem;font-weight:600}
+.flist .ic{width:25px;height:25px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:1px}
+.jr .ic{background:rgba(244,162,97,.2)}.sr .ic{background:var(--green-light)}
 
-  /* ── SECTIONS ── */
-  section { padding: 64px 5%; }
-  .section-inner { max-width: 1100px; margin: 0 auto; }
-  .section-label { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
-  .section-title { font-size: 1.9rem; font-weight: 900; letter-spacing: -0.3px; margin-bottom: 10px; line-height: 1.25; }
-  body.lang-hi .section-title, body.lang-kn .section-title { font-size: 1.6rem; letter-spacing: 0; }
-  .section-sub { font-size: 1rem; color: var(--text-muted); max-width: 500px; }
+/* TRUST */
+.trust-sec{background:#fff}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:880px;margin:0 auto}
+.tcard{background:var(--surface);border-radius:var(--r);padding:26px 22px;border:2px solid var(--border);text-align:center}
+.tic{font-size:38px;margin-bottom:12px}
+.tcard h4{font-size:.97rem;font-weight:800;margin-bottom:7px}
+.tcard p{font-size:.86rem;color:var(--text-muted);line-height:1.6}
+.kn-tag{font-family:'Noto Sans Kannada',sans-serif;font-size:.8rem;color:var(--green);margin-top:6px;font-weight:600}
 
-  /* ── PROBLEM ── */
-  .problem-bg { background: #1a2e22; }
-  .problem-bg .section-label { color: var(--green-mid); }
-  .problem-bg .section-title { color: white; }
-  .problem-bg .section-sub { color: rgba(255,255,255,0.6); }
-  .problem-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 40px; }
-  .problem-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 22px; }
-  .problem-icon { font-size: 24px; margin-bottom: 12px; }
-  .problem-card h3 { font-size: 15px; font-weight: 800; color: white; margin-bottom: 8px; }
-  .problem-card p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.65; }
+/* CHAT EXAMPLES */
+.ex-sec{background:#f0faf5}
+.ex-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:880px;margin:0 auto}
+.ex-card{background:#fff;border-radius:var(--r);overflow:hidden;border:2px solid var(--border)}
+.ex-hdr{background:#075E54;color:#fff;padding:10px 15px;display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700}
+.ex-body{padding:14px;display:flex;flex-direction:column;gap:9px}
+.xb{padding:10px 12px;border-radius:10px;font-size:13px;line-height:1.55}
+.xb.q{background:#f2f2f2;align-self:flex-start}.xb.a{background:#DCF8C6;align-self:flex-end}
+.xb strong{display:block;font-size:10px;font-weight:800;color:var(--green);margin-bottom:3px}
 
-  /* ── HOW IT WORKS ── */
-  .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; margin-top: 48px; }
-  .step { position: relative; }
-  .step-num { width: 40px; height: 40px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; color: var(--green); margin-bottom: 16px; font-family: 'Nunito', sans-serif; }
-  .step h3 { font-size: 15px; font-weight: 800; margin-bottom: 8px; }
-  .step p { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
-  .step-line { position: absolute; top: 20px; left: 40px; right: -14px; height: 1px; background: repeating-linear-gradient(to right, var(--border) 0,var(--border) 6px,transparent 6px,transparent 12px); }
-  .step:last-child .step-line { display: none; }
+/* PRICING */
+.price-sec{background:#fff}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:740px;margin:0 auto}
+.plan{border-radius:var(--r);padding:34px 28px;border:2px solid var(--border);background:var(--surface);position:relative}
+.plan.pop{border-color:var(--green);background:#fff;box-shadow:0 8px 28px rgba(29,158,117,.12)}
+.pop-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--green);
+  color:#fff;font-size:11px;font-weight:800;padding:4px 16px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px}
+.pname{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:9px}
+.pprice{font-size:2.7rem;font-weight:900;line-height:1}
+.pprice sup{font-size:1.1rem;vertical-align:top;margin-top:7px}
+.pperiod{font-size:.83rem;color:var(--text-muted);margin-bottom:20px;margin-top:3px}
+.pfeats{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:24px}
+.pfeats li{display:flex;align-items:flex-start;gap:7px;font-size:.86rem;line-height:1.5}
+.ck{color:var(--green);font-weight:800;flex-shrink:0}
+.pbtn{display:block;width:100%;text-align:center;padding:13px;border-radius:12px;font-size:14px;font-weight:800;
+  text-decoration:none;font-family:inherit;cursor:pointer;border:none;transition:all .2s}
+.pbtn.sec{background:var(--green-light);color:var(--green)}.pbtn.sec:hover{background:var(--green);color:#fff}
+.pbtn.pri{background:var(--wa);color:#fff;box-shadow:0 4px 14px rgba(37,211,102,.3)}.pbtn.pri:hover{background:#1ebe5a}
 
-  /* ── WHY ── */
-  .why-bg { background: var(--green-light); }
-  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-  .why-feature { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 18px; }
-  .why-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 16px; }
-  .why-feature h3 { font-size: 14px; font-weight: 800; margin-bottom: 3px; }
-  .why-feature p { font-size: 13px; color: var(--text-muted); }
-  .sample-update { background: white; border-radius: 16px; border: 1px solid var(--border); padding: 22px; }
-  .sample-label { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
-  .update-bubble { background: #f7fdf9; border-left: 3px solid var(--green); padding: 14px 16px; border-radius: 0 10px 10px 0; font-size: 13px; line-height: 1.85; color: var(--text); }
+/* TESTIMONIALS */
+.testi-sec{background:var(--surface)}
+.testis{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:940px;margin:0 auto}
+.testi{background:#fff;border-radius:var(--r);padding:26px 22px;border:2px solid var(--border)}
+.stars{color:#FFB800;font-size:15px;margin-bottom:9px}
+.testi p{font-size:.88rem;line-height:1.7;color:var(--text-muted);margin-bottom:14px;font-style:italic}
+.tauthor{font-size:.84rem;font-weight:800;color:var(--text)}
+.trole{font-size:.77rem;color:var(--text-muted);margin-top:2px}
 
-  /* ── PRICING ── */
-  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px; max-width: 760px; }
-  .plan-card { background: white; border: 1.5px solid var(--border); border-radius: 18px; padding: 28px; position: relative; }
-  .plan-card.featured { border-color: var(--green); }
-  .plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--green); color: white; font-size: 11px; font-weight: 800; padding: 4px 14px; border-radius: 20px; letter-spacing: 0.5px; text-transform: uppercase; white-space: nowrap; }
-  .plan-name { font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-  .plan-price { font-size: 2.4rem; font-weight: 900; letter-spacing: -1px; font-family: 'Nunito', sans-serif; }
-  .plan-price sup { font-size: 1.2rem; vertical-align: top; margin-top: 8px; display: inline-block; }
-  .plan-period { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
-  .plan-features { list-style: none; margin: 16px 0 24px; }
-  .plan-features li { font-size: 13px; color: var(--text-muted); padding: 7px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
-  .plan-features li:last-child { border-bottom: none; }
-  .check { color: var(--green); font-weight: 900; font-size: 14px; }
-  .plan-btn { width: 100%; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer; font-family: inherit; border: none; display: block; text-align: center; text-decoration: none; }
-  .plan-btn.primary { background: var(--wa-green); color: white; }
-  .plan-btn.secondary { background: var(--green-light); color: var(--green); }
+/* FAQ */
+.faq-sec{background:var(--surface)}
+.faqs{max-width:660px;margin:0 auto;display:flex;flex-direction:column;gap:11px}
+.faq{background:#fff;border-radius:12px;border:2px solid var(--border);overflow:hidden}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:17px 20px;font-size:.93rem;font-weight:700;
+  cursor:pointer;font-family:inherit;color:var(--text);display:flex;justify-content:space-between;align-items:center}
+.faq-ic{font-size:18px;color:var(--green);transition:transform .25s;flex-shrink:0}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.faq-ai{padding:0 20px 17px;font-size:.88rem;color:var(--text-muted);line-height:1.75}
+.faq.open .faq-a{max-height:300px}.faq.open .faq-ic{transform:rotate(45deg)}
 
-  /* ── TESTIMONIALS ── */
-  .testimonials-bg { background: var(--blue-light); }
-  .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 40px; }
-  .testi-card { background: white; border-radius: 14px; padding: 22px; border: 1px solid rgba(55,138,221,0.15); }
-  .stars { color: var(--amber); font-size: 13px; margin-bottom: 12px; }
-  .testi-text { font-size: 14px; line-height: 1.7; margin-bottom: 16px; font-style: italic; }
-  .testi-author { display: flex; align-items: center; gap: 10px; }
-  .testi-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif; }
-  .testi-name { font-size: 13px; font-weight: 800; }
-  .testi-sub { font-size: 11px; color: var(--text-light); }
+/* CTA BANNER */
+.cta-ban{background:linear-gradient(135deg,#0f5c42,#1D9E75);padding:70px 5%;text-align:center;color:#fff}
+.cta-ban h2{font-size:1.95rem;font-weight:900;margin-bottom:12px}
+.cta-ban p{font-size:1rem;opacity:.85;margin-bottom:14px;max-width:480px;margin-left:auto;margin-right:auto}
+.cta-kn{font-family:'Noto Sans Kannada',sans-serif;font-size:.92rem;opacity:.75;margin-bottom:28px}
+.cta-btn{display:inline-flex;align-items:center;gap:10px;background:#fff;color:#075E54;padding:15px 30px;
+  border-radius:14px;font-size:15px;font-weight:800;text-decoration:none;
+  transition:transform .15s,box-shadow .15s;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.25)}
 
-  /* ── FAQ ── */
-  .faq-list { max-width: 680px; margin-top: 40px; }
-  .faq-item { border-bottom: 1px solid var(--border); padding: 18px 0; cursor: pointer; }
-  .faq-q { font-size: 15px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-  body.lang-hi .faq-q, body.lang-kn .faq-q { font-size: 14px; }
-  .faq-arrow { color: var(--green); font-size: 18px; transition: transform 0.2s; flex-shrink: 0; font-family: 'Nunito', sans-serif; }
-  .faq-a { font-size: 14px; color: var(--text-muted); line-height: 1.7; margin-top: 10px; display: none; }
-  .faq-item.open .faq-a { display: block; }
-  .faq-item.open .faq-arrow { transform: rotate(45deg); }
+/* FOOTER */
+footer{background:#0f1f14;color:rgba(255,255,255,.5);padding:30px 5%;text-align:center}
+.flogo{font-size:1.1rem;font-weight:900;color:var(--green-mid);margin-bottom:7px}
+footer p{font-size:12px;line-height:1.8}
+footer a{color:var(--green-mid);text-decoration:none}
 
-  /* ── CTA ── */
-  .cta-section { background: linear-gradient(135deg,#1a2e22 0%,#0f4a35 100%); text-align: center; padding: 80px 5%; }
-  .cta-section h2 { font-size: 1.9rem; font-weight: 900; color: white; margin-bottom: 12px; letter-spacing: -0.3px; }
-  body.lang-hi .cta-section h2, body.lang-kn .cta-section h2 { font-size: 1.6rem; letter-spacing: 0; }
-  .cta-section p { font-size: 1rem; color: rgba(255,255,255,0.65); margin-bottom: 32px; }
-  .cta-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--wa-green); color: white; border: none; padding: 16px 32px; border-radius: 14px; font-size: 15px; font-weight: 800; cursor: pointer; font-family: inherit; text-decoration: none; }
-  .cta-btn:hover { background: #1ebe5a; }
-  .cta-note { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 14px; }
+/* FLOAT */
+.wa-float{position:fixed;bottom:24px;right:24px;z-index:999;width:56px;height:56px;border-radius:50%;
+  background:var(--wa);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:28px;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.5);transition:transform .2s}
+.wa-float:hover{transform:scale(1.08)}
 
-  /* ── FOOTER ── */
-  footer { background: #111; padding: 28px 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-  .footer-logo { font-size: 1.1rem; font-weight: 900; color: var(--green); font-family: 'Nunito', sans-serif; }
-  footer p { font-size: 12px; color: rgba(255,255,255,0.35); }
-
-  /* ── WA FAB ── */
-  .wa-fab { position: fixed; bottom: 24px; right: 24px; z-index: 999; width: 56px; height: 56px; border-radius: 50%; background: var(--wa-green); color: white; border: none; cursor: pointer; box-shadow: 0 4px 16px rgba(37,211,102,0.4); display: flex; align-items: center; justify-content: center; text-decoration: none; }
-
-  /* ── RESPONSIVE ── */
-  @media(max-width:768px) {
-    .hero { grid-template-columns: 1fr; }
-    .hero-visual { display: none; }
-    .problem-grid, .steps, .testi-grid { grid-template-columns: 1fr; }
-    .pricing-grid { grid-template-columns: 1fr; max-width: 380px; }
-    .why-grid { grid-template-columns: 1fr; }
-    .hero h1 { font-size: 1.7rem; }
-    .section-title { font-size: 1.4rem; }
-    .lang-bar { justify-content: flex-start; flex-wrap: wrap; gap: 6px; }
-  }
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero h1{font-size:1.75rem}
+  .steps,.cls-grid,.tgrid,.ex-grid,.pgrid,.testis{grid-template-columns:1fr}
+  .arr{display:none}
+  .stitle{font-size:1.45rem}
+  .plan.pop{margin-top:14px}
+}
 </style>
 </head>
-<body class="lang-en">
+<body>
 
-<!-- LANGUAGE SWITCHER -->
 <div class="lang-bar">
   <span>🌐</span>
-  <button class="lang-btn active" onclick="setLang('en')" id="btn-en">English</button>
-  <button class="lang-btn" onclick="setLang('hi')" id="btn-hi">हिन्दी</button>
-  <button class="lang-btn" onclick="setLang('kn')" id="btn-kn">ಕನ್ನಡ</button>
+  <button class="lang-btn active" onclick="setLang('en')">English</button>
+  <button class="lang-btn" onclick="setLang('hi')">हिन्दी</button>
+  <button class="lang-btn" onclick="setLang('kn')">ಕನ್ನಡ</button>
 </div>
 
-<!-- NAV -->
 <nav>
-  <div class="logo">Edupanion</div>
+  <a href="#" class="logo">Edupanion</a>
   <a class="nav-cta" href="https://wa.me/919380260255?text=Hi!%20I%20want%20to%20start%20the%20free%20trial" target="_blank">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.528 5.848L0 24l6.335-1.498A11.946 11.946 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.017-1.373l-.36-.213-3.732.882.94-3.62-.234-.373A9.795 9.795 0 012.182 12C2.182 6.575 6.575 2.182 12 2.182S21.818 6.575 21.818 12 17.425 21.818 12 21.818z"/></svg>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.558 4.112 1.532 5.836L.057 23.25l5.565-1.451A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.659-.5-5.191-1.373l-.373-.22-3.303.86.887-3.21-.243-.394A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
     <span data-key="nav_cta">Start Free Trial</span>
   </a>
 </nav>
 
 <!-- HERO -->
-<div class="hero">
-  <div class="hero-content">
-    <div class="hero-badge">🌙 <span data-key="hero_badge">Evening Study Support</span></div>
-    <h1 data-key="hero_h1">When your child is stuck at night, <em>Edupanion</em> is there.</h1>
-    <p data-key="hero_sub">Guided homework help for Class 6–8 students via WhatsApp. Simple explanations. Kannada & English. 6 PM – 10 PM, every evening.</p>
-    <div class="hero-btns">
-      <a class="btn-primary" href="https://wa.me/919380260255?text=Hi!%20I%20want%20to%20start%20the%20free%20trial" target="_blank">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.528 5.848L0 24l6.335-1.498A11.946 11.946 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.017-1.373l-.36-.213-3.732.882.94-3.62-.234-.373A9.795 9.795 0 012.182 12C2.182 6.575 6.575 2.182 12 2.182S21.818 6.575 21.818 12 17.425 21.818 12 21.818z"/></svg>
-        <span data-key="hero_cta">Start 3-Day Free Trial</span>
-      </a>
-      <a class="btn-secondary" href="#how"><span data-key="hero_sec">See how it works</span></a>
-    </div>
-    <div class="hero-trust">
-      <div class="trust-dots">
-        <div class="trust-dot"></div>
-        <div class="trust-dot" style="background:#d4f3e7"></div>
-        <div class="trust-dot" style="background:#b0e8d6"></div>
-      </div>
-      <span data-key="hero_trust">Trusted by parents in Davangere · CBSE & State board</span>
-    </div>
+<section class="hero">
+  <div class="hero-badge">🎓 <span data-key="badge">Classes 1–8 · WhatsApp · Evening Support</span></div>
+  <h1 data-key="h1">Homework & study help for <em>Classes 1–8</em>, on WhatsApp 😊</h1>
+  <p class="hero-sub" data-key="sub">Friendly support every evening from 6 PM to 10 PM. Simple explanations, step-by-step guidance — in English and Kannada. No tuition needed for evening doubts.</p>
+  <p class="hero-kn" data-key="kn_line">ಪ್ರತಿ ಸಂಜೆ ನಿಮ್ಮ ಮಗುವಿಗೆ ಸಹಾಯ ಮಾಡಲು ನಾವಿದ್ದೇವೆ 🙏</p>
+  <div class="hero-btns">
+    <a class="btn-wa" href="https://wa.me/919380260255?text=Hi!%20I%20want%20to%20start%20the%20free%20trial" target="_blank">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.558 4.112 1.532 5.836L.057 23.25l5.565-1.451A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.659-.5-5.191-1.373l-.373-.22-3.303.86.887-3.21-.243-.394A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+      <span data-key="cta1">Start 3-Day Free Trial</span>
+    </a>
+    <a class="btn-ghost" href="#how" data-key="cta2">How It Works ↓</a>
   </div>
+  <div class="trust-pills">
+    <div class="trust-pill"><span>✅</span> <span data-key="tp1">No payment to start</span></div>
+    <div class="trust-pill"><span>✅</span> <span data-key="tp2">Kannada + English</span></div>
+    <div class="trust-pill"><span>✅</span> <span data-key="tp3">Real human support</span></div>
+  </div>
+</section>
 
-  <div class="hero-visual">
-    <div class="chat-header">
-      <div class="avatar">🤓</div>
-      <div>
-        <div class="chat-name">Edupanion</div>
-        <div class="chat-status"><span class="online-dot"></span><span data-key="chat_status">Online now · 6 PM – 10 PM</span></div>
-      </div>
+<!-- CHAT DEMO -->
+<div class="chat-wrap">
+  <div class="chat-label" data-key="chat_lbl">💬 A real evening session</div>
+  <div class="chat-win">
+    <div class="chat-bar">
+      <div class="chat-av">E</div>
+      <div><div class="cn">Edupanion</div><div class="cs" data-key="chat_st">Online · 6 PM – 10 PM 🟢</div></div>
     </div>
-    <!-- Chat bubbles swap per language -->
-    <div id="chat-en">
-      <div class="msg student"><div class="bubble">Teacher ne fraction addition explain kiya but samajh nahi aaya 😅 2/3 + 1/4 kaise solve karte?</div><div class="msg-time">6:34 PM ✓✓</div></div>
-      <div class="msg buddy"><div class="bubble">No problem! Step by step dekho 🙂<br><br><strong>Step 1:</strong> Denominator same banao — LCM of 3 and 4 = 12<br><br>2/3 = 8/12 &nbsp; 1/4 = 3/12<br><br><strong>Step 2:</strong> Now add!<br>8/12 + 3/12 = <strong>11/12</strong> ✅<br><br>Aap next one try karo 👍</div><div class="msg-time">6:35 PM</div></div>
-      <div class="msg student"><div class="bubble">Oh got it!! Thank you 🙏</div><div class="msg-time">6:36 PM ✓✓</div></div>
-      <div class="msg buddy"><div class="bubble typing"><span></span><span></span><span></span></div></div>
-    </div>
-    <div id="chat-hi" style="display:none">
-      <div class="msg student"><div class="bubble">भाईया fraction जोड़ना नहीं आ रहा 😅 2/3 + 1/4 कैसे होगा?</div><div class="msg-time">6:34 PM ✓✓</div></div>
-      <div class="msg buddy"><div class="bubble">कोई बात नहीं! एक-एक Step देखते हैं 🙂<br><br><strong>Step 1:</strong> हर (denominator) बराबर करो<br>3 और 4 का LCM = 12<br><br>2/3 = 8/12 &nbsp; 1/4 = 3/12<br><br><strong>Step 2:</strong> अब जोड़ो!<br>8/12 + 3/12 = <strong>11/12</strong> ✅<br><br>अगला खुद try करो 👍</div><div class="msg-time">6:35 PM</div></div>
-      <div class="msg student"><div class="bubble">अरे समझ गया!! Thank you 🙏</div><div class="msg-time">6:36 PM ✓✓</div></div>
-      <div class="msg buddy"><div class="bubble typing"><span></span><span></span><span></span></div></div>
-    </div>
-    <div id="chat-kn" style="display:none">
-      <div class="msg student"><div class="bubble">ಅಣ್ಣ fraction add ಮಾಡೋದು ಅರ್ಥ ಆಗಲ್ಲ 😅 2/3 + 1/4 ಹೇಗೆ ಮಾಡೋದು?</div><div class="msg-time">6:34 PM ✓✓</div></div>
-      <div class="msg buddy"><div class="bubble">ಪರವಾಗಿಲ್ಲ! Step by step ನೋಡೋಣ 🙂<br><br><strong>Step 1:</strong> ಛೇದ ಒಂದೇ ಮಾಡಬೇಕು<br>3 ಮತ್ತು 4 ರ LCM = 12<br><br>2/3 = 8/12 &nbsp; 1/4 = 3/12<br><br><strong>Step 2:</strong> ಈಗ ಕೂಡಿಸಿ!<br>8/12 + 3/12 = <strong>11/12</strong> ✅<br><br>ಮುಂದಿನದು ನೀವೇ try ಮಾಡಿ 👍</div><div class="msg-time">6:35 PM</div></div>
-      <div class="msg student"><div class="bubble">ಓ ಅರ್ಥ ಆಯ್ತು!! ಧನ್ಯವಾದ 🙏</div><div class="msg-time">6:36 PM ✓✓</div></div>
-      <div class="msg buddy"><div class="bubble typing"><span></span><span></span><span></span></div></div>
+    <div class="chat-body">
+      <div class="bbl s"><div class="bbl-who" data-key="ch_s">Student (Class 5)</div><span data-key="ch_q1">Teacher gave this: 4/5 + 2/3 = ? I'm confused 😕</span><div class="bbl-time">6:12 PM</div></div>
+      <div class="bbl t"><div class="bbl-who" data-key="ch_t">Edupanion 😊</div><span data-key="ch_a1">No worries! Let's do it step by step 🙂<br><br>To add fractions, both need the same denominator.<br>4/5 → ×3 → 12/15 &nbsp; 2/3 → ×5 → 10/15<br>Now add: 12/15 + 10/15 = <b>22/15</b> = 1 and 7/15 ✅<br><br>You try: 1/4 + 1/2 = ?</span><div class="bbl-time">6:14 PM</div></div>
+      <div class="bbl s"><span data-key="ch_q2">Is it 3/4? 😊</span><div class="bbl-time">6:16 PM</div></div>
+      <div class="bbl t"><span data-key="ch_a2">Yes!! Perfect!! 🎉 You got it. Well done! ⭐</span><div class="bbl-time">6:16 PM</div></div>
     </div>
   </div>
 </div>
 
-<!-- PROBLEM -->
-<section class="problem-bg">
-  <div class="section-inner">
-    <span class="section-label" data-key="prob_label">The Problem</span>
-    <h2 class="section-title" data-key="prob_title">Every evening, this happens in thousands of homes.</h2>
-    <p class="section-sub" data-key="prob_sub">Children get stuck. Parents are exhausted. Tuition teacher is unavailable. ChatGPT just gives the answer — it doesn't teach.</p>
-    <div class="problem-grid">
-      <div class="problem-card">
-        <div class="problem-icon">😓</div>
-        <h3 data-key="prob1_h">Stuck at night, alone</h3>
-        <p data-key="prob1_p">Your child sits with homework at 7 PM. Nobody to ask. Confidence breaks down silently.</p>
-      </div>
-      <div class="problem-card">
-        <div class="problem-icon">📱</div>
-        <h3 data-key="prob2_h">Misusing ChatGPT</h3>
-        <p data-key="prob2_p">Children copy AI answers without understanding. They pass tomorrow, fail next week.</p>
-      </div>
-      <div class="problem-card">
-        <div class="problem-icon">😔</div>
-        <h3 data-key="prob3_h">Weak students fall further</h3>
-        <p data-key="prob3_p">One unresolved doubt becomes five. Before parents notice, their child has given up.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- HOW IT WORKS -->
-<section id="how">
-  <div class="section-inner">
-    <span class="section-label" data-key="how_label">How It Works</span>
-    <h2 class="section-title" data-key="how_title">Three simple steps, every evening.</h2>
-    <p class="section-sub" data-key="how_sub">No app downloads. No video calls. Just WhatsApp — the app your family already uses.</p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-line"></div>
-        <div class="step-num">1</div>
-        <h3 data-key="step1_h">Child sends their doubt</h3>
-        <p data-key="step1_p">Photo of homework, typed question, or voice message in English or Kannada. Whatever is comfortable.</p>
-      </div>
-      <div class="step">
-        <div class="step-line"></div>
-        <div class="step-num">2</div>
-        <h3 data-key="step2_h">We explain step by step</h3>
-        <p data-key="step2_p">Simple, warm, child-friendly explanations. Short sentences. No complicated AI paragraphs. Voice notes when needed.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <h3 data-key="step3_h">Child learns confidently</h3>
-        <p data-key="step3_p">We guide — we don't give answers. Your child attempts the solution, builds understanding, and gains confidence.</p>
-      </div>
+<section class="how-sec" id="how">
+  <div class="shdr c">
+    <div class="slbl" data-key="how_lbl">How It Works</div>
+    <h2 class="stitle" data-key="how_ttl">Simple as sending a WhatsApp message 📱</h2>
+    <p class="ssub" data-key="how_sub">Your child types their doubt, gets a warm step-by-step reply, and learns to solve it themselves.</p>
+  </div>
+  <div class="steps">
+    <div class="step"><div class="step-n">1</div><div class="step-ic">📸</div><h3 data-key="s1t">Send the Doubt</h3><p data-key="s1d">Child sends a photo or message of the question. Any subject, any board, any class from 1 to 8.</p><div class="arr">→</div></div>
+    <div class="step"><div class="step-n">2</div><div class="step-ic">💡</div><h3 data-key="s2t">Get a Simple Explanation</h3><p data-key="s2d">We reply with a friendly, step-by-step explanation — not just the answer. We help them think.</p><div class="arr">→</div></div>
+    <div class="step"><div class="step-n">3</div><div class="step-ic">🌟</div><h3 data-key="s3t">Learn with Confidence</h3><p data-key="s3d">Child solves it themselves, feels proud. Parents see progress. Homework stress goes down.</p></div>
+  </div>
+</section>
+
+<!-- CLASS SECTIONS -->
+<section class="cls-sec">
+  <div class="shdr c">
+    <div class="slbl" data-key="cls_lbl">What We Cover</div>
+    <h2 class="stitle" data-key="cls_ttl">Support for every class, every level</h2>
+    <p class="ssub" data-key="cls_sub">Whether your child is learning to read or solving algebra — we are here every evening.</p>
+  </div>
+  <div class="cls-grid">
+    <div class="cls-card jr">
+      <div class="cls-tag jr">🌱 <span data-key="jr_tag">Classes 1 – 5</span></div>
+      <h3 data-key="jr_ttl">Building the Foundation</h3>
+      <p class="cls-sub" data-key="jr_sub">Gentle, patient support for young learners.</p>
+      <ul class="flist">
+        <li><span class="ic">📖</span><span data-key="j1">Reading comprehension and basic English</span></li>
+        <li><span class="ic">🔢</span><span data-key="j2">Maths — addition, subtraction, tables, fractions</span></li>
+        <li><span class="ic">📝</span><span data-key="j3">Homework completion support</span></li>
+        <li><span class="ic">🌍</span><span data-key="j4">EVS and basic General Knowledge</span></li>
+        <li><span class="ic">💬</span><span data-key="j5">Explained simply in Kannada or English</span></li>
+        <li><span class="ic">🤗</span><span data-key="j6">Warm tone — every question is welcome</span></li>
+      </ul>
+    </div>
+    <div class="cls-card sr">
+      <div class="cls-tag sr">📚 <span data-key="sr_tag">Classes 6 – 8</span></div>
+      <h3 data-key="sr_ttl">Deeper Learning</h3>
+      <p class="cls-sub" data-key="sr_sub">Concept clarity, doubt solving and exam prep.</p>
+      <ul class="flist">
+        <li><span class="ic">➗</span><span data-key="s1">Maths — algebra, geometry, integers, fractions</span></li>
+        <li><span class="ic">🔬</span><span data-key="s2">Science — concepts, experiments, diagrams</span></li>
+        <li><span class="ic">📖</span><span data-key="s3">English grammar, comprehension, writing</span></li>
+        <li><span class="ic">🌏</span><span data-key="s4">Social Science — history, geography, civics</span></li>
+        <li><span class="ic">📋</span><span data-key="s5">Exam preparation and revision</span></li>
+        <li><span class="ic">🎯</span><span data-key="s6">CBSE, ICSE and Karnataka State Board</span></li>
+      </ul>
     </div>
   </div>
 </section>
 
-<!-- WHY EDUPANION -->
-<section class="why-bg">
-  <div class="section-inner">
-    <div class="why-grid">
-      <div>
-        <span class="section-label" data-key="why_label">Why Edupanion</span>
-        <h2 class="section-title" style="margin-bottom:20px" data-key="why_title">Not a robot. Not a tuition. Something better.</h2>
-        <div class="why-feature">
-          <div class="why-icon">🗣️</div>
-          <div>
-            <h3 data-key="why1_h">Kannada + English support</h3>
-            <p data-key="why1_p">Your child can ask in whichever language feels natural. We respond the same way.</p>
-          </div>
-        </div>
-        <div class="why-feature">
-          <div class="why-icon">📊</div>
-          <div>
-            <h3 data-key="why2_h">Weekly parent updates</h3>
-            <p data-key="why2_p">Every Sunday you get a summary: what was asked, what needs practice, how engagement is going.</p>
-          </div>
-        </div>
-        <div class="why-feature">
-          <div class="why-icon">🤝</div>
-          <div>
-            <h3 data-key="why3_h">Human + AI, not just AI</h3>
-            <p data-key="why3_p">AI helps us prepare. A human responds to your child. Warm. Encouraging. Reliable.</p>
-          </div>
-        </div>
+<!-- PARENT TRUST -->
+<section class="trust-sec">
+  <div class="shdr c">
+    <div class="slbl" data-key="tr_lbl">Why Parents Trust Us</div>
+    <h2 class="stitle" data-key="tr_ttl">Safe, simple and always kind 🙏</h2>
+    <p class="ssub" data-key="tr_sub">Built for Indian families. Sensitive to how children learn. Always honest and transparent.</p>
+  </div>
+  <div class="tgrid">
+    <div class="tcard"><div class="tic">🛡️</div><h4 data-key="t1t">Safe for Children</h4><p data-key="t1d">All conversations are strictly academic. Parents can view every chat at any time.</p><div class="kn-tag">ಮಕ್ಕಳಿಗೆ ಸಂಪೂರ್ಣ ಸುರಕ್ಷಿತ</div></div>
+    <div class="tcard"><div class="tic">💬</div><h4 data-key="t2t">Real Human Support</h4><p data-key="t2d">Not a chatbot. A real person reads every doubt and replies with care and patience.</p><div class="kn-tag">ನಿಜವಾದ ಮನುಷ್ಯರ ಬೆಂಬಲ</div></div>
+    <div class="tcard"><div class="tic">🌐</div><h4 data-key="t3t">Kannada + English</h4><p data-key="t3d">We explain in both languages. Kannada medium students are fully welcome here.</p><div class="kn-tag">ಕನ್ನಡ ಮಾಧ್ಯಮ ಮಕ್ಕಳಿಗೂ ಸ್ವಾಗತ</div></div>
+    <div class="tcard"><div class="tic">📩</div><h4 data-key="t4t">Weekly Parent Update</h4><p data-key="t4d">Every Sunday we send you a short summary of what your child asked and how they are doing.</p><div class="kn-tag">ಪ್ರತಿ ವಾರ ಪೋಷಕರಿಗೆ ಅಪ್‌ಡೇಟ್</div></div>
+    <div class="tcard"><div class="tic">🚫</div><h4 data-key="t5t">No Direct Answers</h4><p data-key="t5d">We guide children to think — never just copy. This is how real learning happens.</p><div class="kn-tag">ನೇರ ಉತ್ತರ ಕೊಡಲ್ಲ</div></div>
+    <div class="tcard"><div class="tic">❤️</div><h4 data-key="t6t">Always Encouraging</h4><p data-key="t6d">We never say "wrong". We say "almost there, let's try again". Children feel safe asking anything.</p><div class="kn-tag">ಯಾವಾಗಲೂ ಪ್ರೋತ್ಸಾಹಿಸುತ್ತೇವೆ</div></div>
+  </div>
+</section>
+
+<!-- CHAT EXAMPLES -->
+<section class="ex-sec">
+  <div class="shdr c">
+    <div class="slbl" data-key="ex_lbl">Real Examples</div>
+    <h2 class="stitle" data-key="ex_ttl">Edupanion in action 💬</h2>
+    <p class="ssub" data-key="ex_sub">These are the kinds of doubts we help with every evening.</p>
+  </div>
+  <div class="ex-grid">
+    <div class="ex-card">
+      <div class="ex-hdr">📱 <span data-key="ex1h">Class 2 · Maths</span></div>
+      <div class="ex-body">
+        <div class="xb q"><strong data-key="lbl_s">Student</strong><span data-key="ex1q">What is 8 × 7? I forget the table 😟</span></div>
+        <div class="xb a"><strong data-key="lbl_t">Edupanion 😊</strong><span data-key="ex1a">No problem! Think: 8×7 = 8×5 + 8×2 = 40+16 = <b>56</b>! Try yourself: 6×7 = ? ✍️</span></div>
       </div>
-      <div class="sample-update">
-        <div class="sample-label" data-key="update_label">Weekly Parent Update — Sample</div>
-        <div class="update-bubble" data-key="update_body">
-          Hello ma'am 🙏<br><br>
-          This week Aarav mainly asked doubts in <strong>Maths (Fractions)</strong> and <strong>Science (Force & Motion)</strong>.<br><br>
-          He understands concepts well but needs more practice in word problems.<br><br>
-          <strong>Suggested focus:</strong><br>
-          • Tables revision (6, 7, 8)<br>
-          • Try 2–3 word problems daily<br><br>
-          Overall participation was very good this week 👍
-        </div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-hdr">📱 <span data-key="ex2h">Class 7 · Science</span></div>
+      <div class="ex-body">
+        <div class="xb q"><strong data-key="lbl_s2">Student</strong><span data-key="ex2q">What is photosynthesis? Didn't understand teacher's explanation</span></div>
+        <div class="xb a"><strong data-key="lbl_t2">Edupanion 😊</strong><span data-key="ex2a">Think of the leaf as a little kitchen 🌿 It takes sunlight + water + CO₂ → makes food (glucose) + oxygen. That's photosynthesis! What are the "ingredients"?</span></div>
+      </div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-hdr">📱 <span data-key="ex3h">Class 4 · English</span></div>
+      <div class="ex-body">
+        <div class="xb q"><strong data-key="lbl_s3">Student</strong><span data-key="ex3q">ಅಕ್ಕ ಹೇಳಿದ್ರು noun ಅಂದ್ರೇನು ಅಂತ ಗೊತ್ತಿಲ್ಲ</span></div>
+        <div class="xb a"><strong data-key="lbl_t3">Edupanion 😊</strong><span data-key="ex3a">ಒಳ್ಳೆ ಪ್ರಶ್ನೆ! Noun = ಹೆಸರು. ನಿಮ್ಮ ಹೆಸರು, ಊರು, ವಸ್ತು — ಎಲ್ಲವೂ noun! ಉದಾ: Rahul, Bengaluru, pen 😊</span></div>
+      </div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-hdr">📱 <span data-key="ex4h">Class 6 · Maths</span></div>
+      <div class="ex-body">
+        <div class="xb q"><strong data-key="lbl_s4">Student</strong><span data-key="ex4q">LCM of 12 and 18? I don't know how</span></div>
+        <div class="xb a"><strong data-key="lbl_t4">Edupanion 😊</strong><span data-key="ex4a">List method 🙂<br>12: 12, 24, <b>36</b>...<br>18: 18, <b>36</b>...<br>First common = 36. LCM = 36 ✅ Now you: LCM of 4 and 6?</span></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- PRICING -->
-<section id="pricing">
-  <div class="section-inner">
-    <span class="section-label" data-key="price_label">Pricing</span>
-    <h2 class="section-title" data-key="price_title">Simple, honest pricing.</h2>
-    <p class="section-sub" data-key="price_sub">Less than one hour of tuition. No hidden charges. Cancel anytime.</p>
-    <div class="pricing-grid">
-      <div class="plan-card">
-        <div class="plan-name" data-key="plan1_name">Standard</div>
-        <div class="plan-price"><sup>₹</sup>199</div>
-        <div class="plan-period" data-key="per_month">per month</div>
-        <ul class="plan-features">
-          <li><span class="check">✓</span> <span data-key="f1_1">2-3 Doubts Helped Daily</span></li>
-          <li><span class="check">✓</span> <span data-key="f1_2">Maths & Science doubts</span></li>
-          <li><span class="check">✓</span> <span data-key="f1_3">Text explanations</span></li>
-          <li><span class="check">✓</span> <span data-key="f1_4">6 PM – 8 PM support</span></li>
-          <li><span class="check">✓</span> <span data-key="f1_5">Response in 1–3 hours</span></li>
-          <li><span class="check">✓</span> <span data-key="f1_6">CBSE + State board</span></li>
-        </ul>
-        <a class="plan-btn secondary" href="https://wa.me/919380260255?text=Hi!%20Standard%20plan%20Rs.199" target="_blank" data-key="trial_btn">Start Free Trial</a>
-      </div>
-      <div class="plan-card featured">
-        <div class="plan-badge" data-key="popular_badge">Most Popular</div>
-        <div class="plan-name" data-key="plan2_name">Priority</div>
-        <div class="plan-price"><sup>₹</sup>499</div>
-        <div class="plan-period" data-key="per_month2">per month</div>
-        <ul class="plan-features">
-          <li><span class="check">✓</span> <span data-key="f2_1">Private WhatsApp chat</span></li>
-          <li><span class="check">✓</span> <span data-key="f2_2">All subjects covered</span></li>
-          <li><span class="check">✓</span> <span data-key="f2_3">Voice note explanations</span></li>
-          <li><span class="check">✓</span> <span data-key="f2_4">Support till 10 PM</span></li>
-          <li><span class="check">✓</span> <span data-key="f2_5">Response in 10–20 min</span></li>
-          <li><span class="check">✓</span> <span data-key="f2_6">Weekly parent updates</span></li>
-        </ul>
-        <a class="plan-btn primary" href="https://wa.me/919380260255?text=Hi!%20Priority%20plan%20Rs.499" target="_blank" data-key="trial_btn2">Start Free Trial</a>
-      </div>
+<section class="price-sec" id="pricing">
+  <div class="shdr c">
+    <div class="slbl" data-key="pr_lbl">Plans & Pricing</div>
+    <h2 class="stitle" data-key="pr_ttl">Less than one hour of tuition 💚</h2>
+    <p class="ssub" data-key="pr_sub">No contracts. No auto-debit. Cancel anytime. 3-day free trial included.</p>
+  </div>
+  <div class="pgrid">
+    <div class="plan">
+      <div class="pname" data-key="p1n">STANDARD</div>
+      <div class="pprice"><sup>₹</sup>199</div>
+      <div class="pperiod" data-key="p1p">per month</div>
+      <ul class="pfeats">
+        <li><span class="ck">✓</span><span data-key="f1">2–3 Doubts Helped Daily</span></li>
+        <li><span class="ck">✓</span><span data-key="f2">Maths &amp; Science doubts</span></li>
+        <li><span class="ck">✓</span><span data-key="f3">Text explanations</span></li>
+        <li><span class="ck">✓</span><span data-key="f4">6 PM – 8 PM support</span></li>
+        <li><span class="ck">✓</span><span data-key="f5">Response in 1–3 hours</span></li>
+        <li><span class="ck">✓</span><span data-key="f6">CBSE + State Board</span></li>
+      </ul>
+      <a class="pbtn sec" href="https://wa.me/919380260255?text=Hi!%20Standard%20plan%20Rs.199" target="_blank" data-key="btn1">Start Free Trial</a>
     </div>
-    <p style="margin-top:16px;font-size:13px;color:var(--text-light)" data-key="trial_note">✨ Both plans include a 3-day free trial. No payment needed to start.</p>
+    <div class="plan pop">
+      <div class="pop-badge" data-key="pop_b">MOST POPULAR</div>
+      <div class="pname" data-key="p2n">PRIORITY</div>
+      <div class="pprice"><sup>₹</sup>499</div>
+      <div class="pperiod" data-key="p2p">per month</div>
+      <ul class="pfeats">
+        <li><span class="ck">✓</span><span data-key="g1">Unlimited doubts daily</span></li>
+        <li><span class="ck">✓</span><span data-key="g2">All subjects — Maths, Science, English, SST</span></li>
+        <li><span class="ck">✓</span><span data-key="g3">Text + Voice explanations</span></li>
+        <li><span class="ck">✓</span><span data-key="g4">6 PM – 10 PM support</span></li>
+        <li><span class="ck">✓</span><span data-key="g5">Response in 10–20 minutes</span></li>
+        <li><span class="ck">✓</span><span data-key="g6">Weekly parent progress update</span></li>
+        <li><span class="ck">✓</span><span data-key="g7">CBSE, ICSE + State Board</span></li>
+      </ul>
+      <a class="pbtn pri" href="https://wa.me/919380260255?text=Hi!%20Priority%20plan%20Rs.499" target="_blank" data-key="btn2">Start Free Trial</a>
+    </div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
-<section class="testimonials-bg">
-  <div class="section-inner">
-    <span class="section-label" data-key="testi_label">Parent Stories</span>
-    <h2 class="section-title" data-key="testi_title">What parents are saying.</h2>
-    <p class="section-sub" data-key="testi_sub">Real families. Real results.</p>
-    <div class="testi-grid">
-      <div class="testi-card">
-        <div class="stars">★★★★★</div>
-        <p class="testi-text" data-key="t1_text">"My daughter used to give up on maths homework every evening. Now she messages Edupanion and solves it herself. Her confidence has changed completely."</p>
-        <div class="testi-author">
-          <div class="testi-avatar" style="background:#E1F5EE;color:#1D9E75">SL</div>
-          <div>
-            <div class="testi-name">Savitha L.</div>
-            <div class="testi-sub" data-key="t1_sub">Mother, Class 7 · Davangere</div>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <div class="stars">★★★★★</div>
-        <p class="testi-text" data-key="t2_text">"I work late and can't help with homework. Edupanion fills that gap. The Kannada explanations are a big relief — my son actually understands now."</p>
-        <div class="testi-author">
-          <div class="testi-avatar" style="background:#E6F1FB;color:#185FA5">RK</div>
-          <div>
-            <div class="testi-name">Ravi K.</div>
-            <div class="testi-sub" data-key="t2_sub">Father, Class 6 · Hubli</div>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <div class="stars">★★★★★</div>
-        <p class="testi-text" data-key="t3_text">"The Sunday updates are so useful. I finally know what topics my child struggles with. Worth every rupee of the ₹499 plan."</p>
-        <div class="testi-author">
-          <div class="testi-avatar" style="background:#FAEEDA;color:#BA7517">PM</div>
-          <div>
-            <div class="testi-name">Priya M.</div>
-            <div class="testi-sub" data-key="t3_sub">Mother, Class 8 · Shimoga</div>
-          </div>
-        </div>
-      </div>
-    </div>
+<section class="testi-sec">
+  <div class="shdr c">
+    <div class="slbl" data-key="ts_lbl">Parent Stories</div>
+    <h2 class="stitle" data-key="ts_ttl">Families who found peace at 8 PM 😊</h2>
+  </div>
+  <div class="testis">
+    <div class="testi"><div class="stars">★★★★★</div><p data-key="ts1">"My Class 3 daughter used to cry every night with homework. Now she messages Edupanion and comes to dinner smiling. I cannot explain the relief."</p><div class="tauthor" data-key="ta1">Savitha K.</div><div class="trole" data-key="tr1">Mother · Mysuru · Class 3</div></div>
+    <div class="testi"><div class="stars">★★★★★</div><p data-key="ts2">"My son is in Class 7 and I can't help with his Maths anymore. Edupanion explains so simply, even I understand! The Kannada support helps a lot."</p><div class="tauthor" data-key="ta2">Ravi Reddy</div><div class="trole" data-key="tr2">Father · Bengaluru · Class 7</div></div>
+    <div class="testi"><div class="stars">★★★★★</div><p data-key="ts3">"I was worried about my child chatting with strangers. But every conversation is academic and so kind. My child actually looks forward to studying now."</p><div class="tauthor" data-key="ta3">Meena Sharma</div><div class="trole" data-key="tr3">Mother · Hubli · Class 5</div></div>
   </div>
 </section>
 
 <!-- FAQ -->
-<section>
-  <div class="section-inner">
-    <span class="section-label" data-key="faq_label">FAQ</span>
-    <h2 class="section-title" data-key="faq_title">Questions parents ask.</h2>
-    <div class="faq-list">
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q"><span data-key="faq1_q">Is Edupanion an AI bot?</span> <span class="faq-arrow">+</span></div>
-        <div class="faq-a" data-key="faq1_a">No. We use AI internally to prepare answers quickly — but every response your child receives comes from a real human who has reviewed and humanized it. You will always feel a warm, personal touch.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q"><span data-key="faq2_q">Which classes and subjects are covered?</span> <span class="faq-arrow">+</span></div>
-        <div class="faq-a" data-key="faq2_a">We currently support Class 6, 7, and 8 students for Maths and Science (both plans). The Priority plan also covers all other subjects including English, Social Science, and Kannada.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q"><span data-key="faq3_q">What are the support timings?</span> <span class="faq-arrow">+</span></div>
-        <div class="faq-a" data-key="faq3_a">Standard plan: 6 PM – 8 PM. Priority plan: 6 PM – 10 PM. We are offline during school hours. Away messages will let your child know when we are back.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q"><span data-key="faq4_q">Will you just give my child the answers?</span> <span class="faq-arrow">+</span></div>
-        <div class="faq-a" data-key="faq4_a">Never. Our goal is guided learning — not answer delivery. We explain concepts, walk through steps, and encourage your child to attempt the solution. The child must do the work.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q"><span data-key="faq5_q">Is this a replacement for tuition?</span> <span class="faq-arrow">+</span></div>
-        <div class="faq-a" data-key="faq5_a">No — think of us as an evening study companion. If your child already has tuition, we fill the gaps at night. Many families use both.</div>
-      </div>
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q"><span data-key="faq6_q">How do I pay?</span> <span class="faq-arrow">+</span></div>
-        <div class="faq-a" data-key="faq6_a">Start with a 3-day free trial — no payment needed. After the trial, payment is via UPI / Google Pay / PhonePe. We will send you the details on WhatsApp.</div>
-      </div>
-    </div>
+<section class="faq-sec">
+  <div class="shdr c">
+    <div class="slbl" data-key="fq_lbl">Common Questions</div>
+    <h2 class="stitle" data-key="fq_ttl">Questions parents usually ask</h2>
+  </div>
+  <div class="faqs">
+    <div class="faq"><button class="faq-q" onclick="toggleFaq(this)"><span data-key="q1">Is this an AI chatbot or a real person?</span><span class="faq-ic">+</span></button><div class="faq-a"><div class="faq-ai" data-key="a1">A real person. We use tools internally to prepare good explanations — but every message your child receives is reviewed and sent by a human. Your child will always feel a warm, personal presence.</div></div></div>
+    <div class="faq"><button class="faq-q" onclick="toggleFaq(this)"><span data-key="q2">Is it safe for my child to chat on WhatsApp?</span><span class="faq-ic">+</span></button><div class="faq-a"><div class="faq-ai" data-key="a2">Completely. All conversations are strictly academic. Parents can view the chat anytime. We never ask for personal information beyond name and class. Many parents keep the child's WhatsApp on the family device — we fully support this.</div></div></div>
+    <div class="faq"><button class="faq-q" onclick="toggleFaq(this)"><span data-key="q3">Which classes and boards do you support?</span><span class="faq-ic">+</span></button><div class="faq-a"><div class="faq-ai" data-key="a3">We support Classes 1 to 8 — CBSE, ICSE and Karnataka State Board. Both English medium and Kannada medium. Standard plan covers Maths and Science. Priority plan covers all subjects.</div></div></div>
+    <div class="faq"><button class="faq-q" onclick="toggleFaq(this)"><span data-key="q4">Do you give direct answers to homework?</span><span class="faq-ic">+</span></button><div class="faq-a"><div class="faq-ai" data-key="a4">Never. We explain the concept, walk through the thinking, and then ask the child to try themselves. This is how they learn for exams — not just for today's homework.</div></div></div>
+    <div class="faq"><button class="faq-q" onclick="toggleFaq(this)"><span data-key="q5">How do I pay? Is there a contract?</span><span class="faq-ic">+</span></button><div class="faq-a"><div class="faq-ai" data-key="a5">Payment via UPI — Google Pay, PhonePe or Paytm. Monthly only. No contracts. No auto-debit. Start with the 3-day free trial — no payment needed at all.</div></div></div>
+    <div class="faq"><button class="faq-q" onclick="toggleFaq(this)"><span data-key="q6">My child already uses ChatGPT. Why pay for this?</span><span class="faq-ic">+</span></button><div class="faq-a"><div class="faq-ai" data-key="a6">ChatGPT gives direct answers — children copy without understanding. In exams there is no ChatGPT. Edupanion teaches your child HOW to think through a problem. They perform better in school and feel confident.</div></div></div>
   </div>
 </section>
 
-<!-- FINAL CTA -->
-<section class="cta-section">
-  <h2 data-key="cta_h">Your child's best study evening starts tonight.</h2>
-  <p data-key="cta_sub">Join the 3-day free trial. No credit card. No app download. Just WhatsApp.</p>
+<!-- CTA BANNER -->
+<section class="cta-ban">
+  <h2 data-key="cta_h">Start your child's free trial today 🌟</h2>
+  <p data-key="cta_p">3 days, no payment, no commitment. Just send a WhatsApp message and we will take it from there.</p>
+  <div class="cta-kn" data-key="cta_kn">ಇಂದೇ ಪ್ರಾರಂಭಿಸಿ — ಮೊದಲ 3 ದಿನ ಉಚಿತ 🙏</div>
   <a class="cta-btn" href="https://wa.me/919380260255?text=Hi!%20I%20want%20to%20start%20the%20free%20trial%20for%20Edupanion" target="_blank">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.528 5.848L0 24l6.335-1.498A11.946 11.946 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.017-1.373l-.36-.213-3.732.882.94-3.62-.234-.373A9.795 9.795 0 012.182 12C2.182 6.575 6.575 2.182 12 2.182S21.818 6.575 21.818 12 17.425 21.818 12 21.818z"/></svg>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.558 4.112 1.532 5.836L.057 23.25l5.565-1.451A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.659-.5-5.191-1.373l-.373-.22-3.303.86.887-3.21-.243-.394A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
     <span data-key="cta_btn">Start Free Trial on WhatsApp</span>
   </a>
-  <p class="cta-note" data-key="cta_note">Support timings: 6 PM – 10 PM · Class 6–8 · CBSE & State Board · English & Kannada</p>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <a href="https://edupanion.in" class="footer-logo" style="text-decoration:none;">Edupanion</a>
-  <p data-key="footer_copy">Evening study support for Indian school children. © 2026 edupanion.in</p>
-  <p style="color:rgba(255,255,255,0.25)">Made with ❤️ in Karnataka</p>
+  <div class="flogo">Edupanion</div>
+  <p><a href="https://edupanion.in">edupanion.in</a> &nbsp;·&nbsp; <span data-key="ft">Evening study support for Indian school children. © 2026 edupanion.in</span></p>
 </footer>
 
-<!-- WA FAB -->
-<a class="wa-fab" href="https://wa.me/919380260255?text=Hi!" target="_blank" title="Chat on WhatsApp">
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.528 5.848L0 24l6.335-1.498A11.946 11.946 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.017-1.373l-.36-.213-3.732.882.94-3.62-.234-.373A9.795 9.795 0 012.182 12C2.182 6.575 6.575 2.182 12 2.182S21.818 6.575 21.818 12 17.425 21.818 12 21.818z"/></svg>
+<a class="wa-float" href="https://wa.me/919380260255?text=Hi!%20I%20want%20to%20start%20the%20free%20trial" target="_blank">
+  <svg width="27" height="27" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.558 4.112 1.532 5.836L.057 23.25l5.565-1.451A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.659-.5-5.191-1.373l-.373-.22-3.303.86.887-3.21-.243-.394A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
 </a>
 
 <script>
-const translations = {
-  en: {
-    nav_cta: "Start Free Trial",
-    hero_badge: "Evening Study Support",
-    hero_h1: 'When your child is stuck at night, <em>Edupanion</em> is there.',
-    hero_sub: "Guided homework help for Class 6–8 students via WhatsApp. Simple explanations. Kannada & English. 6 PM – 10 PM, every evening.",
-    hero_cta: "Start 3-Day Free Trial",
-    hero_sec: "See how it works",
-    hero_trust: "Trusted by parents in Davangere · CBSE & State board",
-    chat_status: "Online now · 6 PM – 10 PM",
-    prob_label: "The Problem",
-    prob_title: "Every evening, this happens in thousands of homes.",
-    prob_sub: "Children get stuck. Parents are exhausted. Tuition teacher is unavailable. ChatGPT just gives the answer — it doesn't teach.",
-    prob1_h: "Stuck at night, alone",
-    prob1_p: "Your child sits with homework at 7 PM. Nobody to ask. Confidence breaks down silently.",
-    prob2_h: "Misusing ChatGPT",
-    prob2_p: "Children copy AI answers without understanding. They pass tomorrow, fail next week.",
-    prob3_h: "Weak students fall further",
-    prob3_p: "One unresolved doubt becomes five. Before parents notice, their child has given up.",
-    how_label: "How It Works",
-    how_title: "Three simple steps, every evening.",
-    how_sub: "No app downloads. No video calls. Just WhatsApp — the app your family already uses.",
-    step1_h: "Child sends their doubt",
-    step1_p: "Photo of homework, typed question, or voice message in English or Kannada. Whatever is comfortable.",
-    step2_h: "We explain step by step",
-    step2_p: "Simple, warm, child-friendly explanations. Short sentences. No complicated AI paragraphs. Voice notes when needed.",
-    step3_h: "Child learns confidently",
-    step3_p: "We guide — we don't give answers. Your child attempts the solution, builds understanding, and gains confidence.",
-    why_label: "Why Edupanion",
-    why_title: "Not a robot. Not a tuition. Something better.",
-    why1_h: "Kannada + English support",
-    why1_p: "Your child can ask in whichever language feels natural. We respond the same way.",
-    why2_h: "Weekly parent updates",
-    why2_p: "Every Sunday you get a summary: what was asked, what needs practice, how engagement is going.",
-    why3_h: "Human + AI, not just AI",
-    why3_p: "AI helps us prepare. A human responds to your child. Warm. Encouraging. Reliable.",
-    update_label: "Weekly Parent Update — Sample",
-    update_body: "Hello ma'am 🙏<br><br>This week Aarav mainly asked doubts in <strong>Maths (Fractions)</strong> and <strong>Science (Force & Motion)</strong>.<br><br>He understands concepts well but needs more practice in word problems.<br><br><strong>Suggested focus:</strong><br>• Tables revision (6, 7, 8)<br>• Try 2–3 word problems daily<br><br>Overall participation was very good this week 👍",
-    price_label: "Pricing",
-    price_title: "Simple, honest pricing.",
-    price_sub: "Less than one hour of tuition. No hidden charges. Cancel anytime.",
-    plan1_name: "Standard",
-    plan2_name: "Priority",
-    per_month: "per month",
-    per_month2: "per month",
-    popular_badge: "Most Popular",
-    f1_1:"2-3 Doubts Helped Daily", f1_2:"Maths & Science doubts", f1_3:"Text explanations", f1_4:"6 PM – 8 PM support", f1_5:"Response in 1–3 hours", f1_6:"CBSE + State board",
-    f2_1:"Private WhatsApp chat", f2_2:"All subjects covered", f2_3:"Voice note explanations", f2_4:"Support till 10 PM", f2_5:"Response in 10–20 min", f2_6:"Weekly parent updates",
-    trial_btn: "Start Free Trial",
-    trial_btn2: "Start Free Trial",
-    trial_note: "✨ Both plans include a 3-day free trial. No payment needed to start.",
-    testi_label: "Parent Stories",
-    testi_title: "What parents are saying.",
-    testi_sub: "Real families. Real results.",
-    t1_text: '"My daughter used to give up on maths homework every evening. Now she messages Edupanion and solves it herself. Her confidence has changed completely."',
-    t1_sub: "Mother, Class 7 · Davangere",
-    t2_text: '"I work late and can\'t help with homework. Edupanion fills that gap. The Kannada explanations are a big relief — my son actually understands now."',
-    t2_sub: "Father, Class 6 · Hubli",
-    t3_text: '"The Sunday updates are so useful. I finally know what topics my child struggles with. Worth every rupee of the ₹499 plan."',
-    t3_sub: "Mother, Class 8 · Shimoga",
-    faq_label: "FAQ",
-    faq_title: "Questions parents ask.",
-    faq1_q: "Is Edupanion an AI bot?",
-    faq1_a: "No. We use AI internally to prepare answers quickly — but every response your child receives comes from a real human who has reviewed and humanized it. You will always feel a warm, personal touch.",
-    faq2_q: "Which classes and subjects are covered?",
-    faq2_a: "We currently support Class 6, 7, and 8 students for Maths and Science (both plans). The Priority plan also covers all other subjects including English, Social Science, and Kannada.",
-    faq3_q: "What are the support timings?",
-    faq3_a: "Standard plan: 6 PM – 8 PM. Priority plan: 6 PM – 10 PM. We are offline during school hours. Away messages will let your child know when we are back.",
-    faq4_q: "Will you just give my child the answers?",
-    faq4_a: "Never. Our goal is guided learning — not answer delivery. We explain concepts, walk through steps, and encourage your child to attempt the solution. The child must do the work.",
-    faq5_q: "Is this a replacement for tuition?",
-    faq5_a: "No — think of us as an evening study companion. If your child already has tuition, we fill the gaps at night. Many families use both.",
-    faq6_q: "How do I pay?",
-    faq6_a: "Start with a 3-day free trial — no payment needed. After the trial, payment is via UPI / Google Pay / PhonePe. We will send you the details on WhatsApp.",
-    cta_h: "Your child's best study evening starts tonight.",
-    cta_sub: "Join the 3-day free trial. No credit card. No app download. Just WhatsApp.",
-    cta_btn: "Start Free Trial on WhatsApp",
-    cta_note: "Support timings: 6 PM – 10 PM · Class 6–8 · CBSE & State Board · English & Kannada",
-    footer_copy: "Evening study support for Indian school children. © 2026 edupanion.in"
-  },
-
-  hi: {
-    nav_cta: "फ्री ट्रायल शुरू करें",
-    hero_badge: "शाम की पढ़ाई सहायता",
-    hero_h1: 'जब रात को बच्चा अटक जाए, <em>Edupanion</em> साथ है।',
-    hero_sub: "Class 6–8 के छात्रों के लिए WhatsApp पर गाइडेड होमवर्क हेल्प। सरल भाषा में समझाइए। हिंदी, कन्नड़ और English में। शाम 6 बजे से 10 बजे तक।",
-    hero_cta: "3 दिन का फ्री ट्रायल शुरू करें",
-    hero_sec: "देखें कैसे काम करता है",
-    hero_trust: "दावणगेरे के अभिभावकों का भरोसा · CBSE और State Board",
-    chat_status: "अभी ऑनलाइन · शाम 6 – 10 बजे",
-    prob_label: "समस्या",
-    prob_title: "हर शाम हजारों घरों में यही होता है।",
-    prob_sub: "बच्चा अटक जाता है। माता-पिता थके होते हैं। ट्यूशन टीचर रात को उपलब्ध नहीं। ChatGPT सिर्फ जवाब देता है — सिखाता नहीं।",
-    prob1_h: "रात को अकेला अटका हुआ",
-    prob1_p: "बच्चा शाम 7 बजे होमवर्क लेकर बैठा है। पूछने वाला कोई नहीं। धीरे-धीरे आत्मविश्वास टूटता है।",
-    prob2_h: "ChatGPT का गलत इस्तेमाल",
-    prob2_p: "बच्चे बिना समझे AI से जवाब कॉपी करते हैं। आज पास, अगले हफ्ते फेल।",
-    prob3_h: "कमज़ोर बच्चे और पिछड़ते हैं",
-    prob3_p: "एक संशय पाँच बन जाता है। माता-पिता को पता चलने से पहले बच्चा हार मान लेता है।",
-    how_label: "कैसे काम करता है",
-    how_title: "हर शाम तीन आसान कदम।",
-    how_sub: "कोई ऐप डाउनलोड नहीं। कोई वीडियो कॉल नहीं। बस WhatsApp — जो आपके घर में पहले से है।",
-    step1_h: "बच्चा अपना संशय भेजे",
-    step1_p: "होमवर्क की फोटो, टाइप किया सवाल, या हिंदी / कन्नड़ में voice message — जो सहज लगे।",
-    step2_h: "हम step by step समझाते हैं",
-    step2_p: "सरल, गर्मजोशी भरी, बच्चे के अनुकूल भाषा में। छोटे-छोटे वाक्य। ज़रूरत हो तो voice note।",
-    step3_h: "बच्चा आत्मविश्वास से सीखे",
-    step3_p: "हम मार्गदर्शन करते हैं — सीधा जवाब नहीं देते। बच्चा खुद कोशिश करे, समझे, और आगे बढ़े।",
-    why_label: "Edupanion क्यों?",
-    why_title: "न रोबोट, न ट्यूशन — कुछ बेहतर।",
-    why1_h: "कन्नड़ + हिंदी + English सहायता",
-    why1_p: "बच्चा जिस भाषा में सहज हो, उसी में पूछ सकता है। हम उसी भाषा में जवाब देते हैं।",
-    why2_h: "साप्ताहिक अभिभावक अपडेट",
-    why2_p: "हर रविवार आपको सारांश मिलेगा — क्या पूछा गया, क्या अभ्यास चाहिए, बच्चे की भागीदारी कैसी रही।",
-    why3_h: "Human + AI, केवल AI नहीं",
-    why3_p: "AI हमें तैयार करने में मदद करता है। आपके बच्चे को इंसान जवाब देता है — गर्म, उत्साहजनक, भरोसेमंद।",
-    update_label: "साप्ताहिक अभिभावक अपडेट — उदाहरण",
-    update_body: "नमस्ते मैडम 🙏<br><br>इस हफ्ते आरव ने ज़्यादातर <strong>गणित (भिन्न)</strong> और <strong>विज्ञान (बल और गति)</strong> में संशय पूछे।<br><br>वह अवधारणाएं समझता है लेकिन शब्द-समस्याओं में अधिक अभ्यास ज़रूरी है।<br><br><strong>सुझाया गया ध्यान:</strong><br>• पहाड़े दोहराएं (6, 7, 8)<br>• रोज 2–3 शब्द-समस्याएं हल करें<br><br>इस हफ्ते भागीदारी बहुत अच्छी रही 👍",
-    price_label: "मूल्य निर्धारण",
-    price_title: "सरल और ईमानदार कीमत।",
-    price_sub: "ट्यूशन के एक घंटे से भी कम। कोई छुपा चार्ज नहीं। कभी भी रद्द करें।",
-    plan1_name: "स्टैंडर्ड",
-    plan2_name: "प्रायोरिटी",
-    per_month: "प्रति माह",
-    per_month2: "प्रति माह",
-    popular_badge: "सबसे लोकप्रिय",
-    f1_1:"दिन में 2-3 संशय हल", f1_2:"गणित और विज्ञान के संशय", f1_3:"टेक्स्ट में समझाना", f1_4:"शाम 6 – 8 बजे सहायता", f1_5:"1–3 घंटे में जवाब", f1_6:"CBSE + State Board",
-    f2_1:"निजी WhatsApp चैट", f2_2:"सभी विषय शामिल", f2_3:"Voice note में समझाना", f2_4:"रात 10 बजे तक सहायता", f2_5:"10–20 मिनट में जवाब", f2_6:"साप्ताहिक अभिभावक अपडेट",
-    trial_btn: "फ्री ट्रायल शुरू करें",
-    trial_btn2: "फ्री ट्रायल शुरू करें",
-    trial_note: "✨ दोनों प्लान में 3-दिन का फ्री ट्रायल शामिल है। शुरू करने के लिए कोई भुगतान नहीं।",
-    testi_label: "अभिभावकों की कहानियाँ",
-    testi_title: "अभिभावक क्या कह रहे हैं।",
-    testi_sub: "असली परिवार। असली नतीजे।",
-    t1_text: '"मेरी बेटी हर शाम गणित का होमवर्क छोड़ देती थी। अब वह Edupanion को मैसेज करती है और खुद हल करती है। उसका आत्मविश्वास पूरी तरह बदल गया है।"',
-    t1_sub: "माँ, कक्षा 7 · दावणगेरे",
-    t2_text: '"मैं देर से काम से आता हूँ और होमवर्क में मदद नहीं कर पाता। Edupanion यह कमी पूरी करता है। कन्नड़ में समझाने से बेटे को बहुत फायदा हुआ।"',
-    t2_sub: "पिता, कक्षा 6 · हुबली",
-    t3_text: '"रविवार के अपडेट बहुत उपयोगी हैं। अब मुझे पता चलता है कि मेरे बच्चे को किन विषयों में दिक्कत है। ₹499 की पूरी कीमत वसूल है।"',
-    t3_sub: "माँ, कक्षा 8 · शिमोगा",
-    faq_label: "अक्सर पूछे जाने वाले सवाल",
-    faq_title: "अभिभावक जो सवाल पूछते हैं।",
-    faq1_q: "क्या Edupanion एक AI बोट है?",
-    faq1_a: "नहीं। हम AI का उपयोग केवल आंतरिक रूप से जवाब तैयार करने के लिए करते हैं — लेकिन आपके बच्चे को हर जवाब एक असली इंसान देता है जिसने उसे जाँचा और मानवीय बनाया हो।",
-    faq2_q: "कौन सी कक्षाएं और विषय शामिल हैं?",
-    faq2_a: "फिलहाल हम कक्षा 6, 7 और 8 के छात्रों को गणित और विज्ञान में सहायता देते हैं (दोनों प्लान)। Priority प्लान में English, Social Science और कन्नड़ भी शामिल हैं।",
-    faq3_q: "सहायता का समय क्या है?",
-    faq3_a: "Standard: शाम 6 – 8 बजे। Priority: शाम 6 – रात 10 बजे। स्कूल के घंटों में हम ऑफलाइन रहते हैं।",
-    faq4_q: "क्या आप सीधे जवाब दे देंगे?",
-    faq4_a: "कभी नहीं। हमारा लक्ष्य guided learning है — जवाब देना नहीं। हम अवधारणाएं समझाते हैं और बच्चे को खुद कोशिश करने के लिए प्रोत्साहित करते हैं।",
-    faq5_q: "क्या यह ट्यूशन का विकल्प है?",
-    faq5_a: "नहीं — हम शाम के अध्ययन साथी हैं। अगर बच्चे के पास ट्यूशन है, तो हम रात की कमी पूरी करते हैं। कई परिवार दोनों उपयोग करते हैं।",
-    faq6_q: "भुगतान कैसे करें?",
-    faq6_a: "3-दिन के फ्री ट्रायल से शुरू करें — कोई भुगतान नहीं। बाद में UPI / Google Pay / PhonePe से। हम WhatsApp पर विवरण भेजेंगे।",
-    cta_h: "आपके बच्चे की सबसे अच्छी पढ़ाई की शाम आज रात से शुरू होती है।",
-    cta_sub: "3-दिन के फ्री ट्रायल में जुड़ें। कोई क्रेडिट कार्ड नहीं। कोई ऐप डाउनलोड नहीं। बस WhatsApp।",
-    cta_btn: "WhatsApp पर फ्री ट्रायल शुरू करें",
-    cta_note: "सहायता समय: शाम 6 – रात 10 बजे · कक्षा 6–8 · CBSE & State Board · Hindi, Kannada & English",
-    footer_copy: "भारतीय स्कूल बच्चों के लिए शाम की पढ़ाई सहायता। © 2026 edupanion.in"
-  },
-
-  kn: {
-    nav_cta: "ಉಚಿತ ಟ್ರಯಲ್ ಪ್ರಾರಂಭಿಸಿ",
-    hero_badge: "ಸಂಜೆ ಅಧ್ಯಯನ ಬೆಂಬಲ",
-    hero_h1: 'ರಾತ್ರಿ ಮಗು ಅಟಕಿದಾಗ, <em>Edupanion</em> ಜೊತೆಯಲ್ಲಿದೆ।',
-    hero_sub: "Class 6–8 ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ WhatsApp ಮೂಲಕ ಮಾರ್ಗದರ್ಶಿ ಹೋಮ್‌ವರ್ಕ್ ಸಹಾಯ. ಸರಳ ವಿವರಣೆ. ಕನ್ನಡ ಮತ್ತು English ನಲ್ಲಿ. ಸಂಜೆ 6 – ರಾತ್ರಿ 10 ಗಂಟೆ.",
-    hero_cta: "3 ದಿನ ಉಚಿತ ಟ್ರಯಲ್ ಪ್ರಾರಂಭಿಸಿ",
-    hero_sec: "ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ ನೋಡಿ",
-    hero_trust: "ದಾವಣಗೆರೆ ಪೋಷಕರ ನಂಬಿಕೆ · CBSE & State Board",
-    chat_status: "ಈಗ ಆನ್‌ಲೈನ್ · ಸಂಜೆ 6 – 10",
-    prob_label: "ಸಮಸ್ಯೆ",
-    prob_title: "ಪ್ರತಿ ಸಂಜೆ ಸಾವಿರಾರು ಮನೆಗಳಲ್ಲಿ ಇದು ಆಗುತ್ತದೆ.",
-    prob_sub: "ಮಗು ಅಟಕಿದೆ. ಪೋಷಕರು ದಣಿದಿದ್ದಾರೆ. ಟ್ಯೂಷನ್ ಟೀಚರ್ ರಾತ್ರಿ ಸಿಗಲ್ಲ. ChatGPT ಉತ್ತರ ಕೊಡುತ್ತದೆ — ಕಲಿಸಲ್ಲ.",
-    prob1_h: "ರಾತ್ರಿ ಒಂಟಿಯಾಗಿ ಅಟಕಿದೆ",
-    prob1_p: "ಮಗು ಸಂಜೆ 7 ಗಂಟೆಗೆ ಹೋಮ್‌ವರ್ಕ್ ಹಿಡಿದು ಕೂತಿದೆ. ಕೇಳಲು ಯಾರೂ ಇಲ್ಲ. ನಿಧಾನವಾಗಿ ಆತ್ಮವಿಶ್ವಾಸ ಕಮ್ಮಿ ಆಗುತ್ತದೆ.",
-    prob2_h: "ChatGPT ದುರ್ಬಳಕೆ",
-    prob2_p: "ಮಕ್ಕಳು ಅರ್ಥ ಮಾಡಿಕೊಳ್ಳದೆ AI ಉತ್ತರ ಕಾಪಿ ಮಾಡುತ್ತಾರೆ. ಇಂದು ಪಾಸ್, ಮುಂದಿನ ವಾರ ಫೇಲ್.",
-    prob3_h: "ದುರ್ಬಲ ವಿದ್ಯಾರ್ಥಿ ಇನ್ನೂ ಹಿಂದೆ ಬೀಳುತ್ತಾರೆ",
-    prob3_p: "ಒಂದು ಅನುಮಾನ ಐದು ಆಗುತ್ತದೆ. ಪೋಷಕರಿಗೆ ಗೊತ್ತಾಗುವ ಮೊದಲು ಮಗು ಪ್ರಯತ್ನ ಬಿಟ್ಟಿರುತ್ತದೆ.",
-    how_label: "ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ",
-    how_title: "ಪ್ರತಿ ಸಂಜೆ ಮೂರು ಸರಳ ಹಂತಗಳು.",
-    how_sub: "ಯಾವ ಆ್ಯಪ್ ಡೌನ್‌ಲೋಡ್ ಇಲ್ಲ. ವಿಡಿಯೋ ಕಾಲ್ ಇಲ್ಲ. ಬರೀ WhatsApp — ನಿಮ್ಮ ಮನೆಯಲ್ಲಿ ಈಗಾಗಲೇ ಇರುವ ಆ್ಯಪ್.",
-    step1_h: "ಮಗು ತನ್ನ ಅನುಮಾನ ಕಳುಹಿಸಲಿ",
-    step1_p: "ಹೋಮ್‌ವರ್ಕ್ ಫೋಟೋ, ಟೈಪ್ ಮಾಡಿದ ಪ್ರಶ್ನೆ, ಅಥವಾ ಕನ್ನಡ / English ನಲ್ಲಿ voice message — ಯಾವುದು ಆರಾಮದಾಯಕ ಅದು.",
-    step2_h: "ನಾವು ಹಂತ ಹಂತವಾಗಿ ವಿವರಿಸುತ್ತೇವೆ",
-    step2_p: "ಸರಳ, ಆತ್ಮೀಯ, ಮಗುವಿಗೆ ಹೊಂದುವ ಭಾಷೆ. ಚಿಕ್ಕ ವಾಕ್ಯಗಳು. ಅಗತ್ಯಬಿದ್ದರೆ voice note.",
-    step3_h: "ಮಗು ಆತ್ಮವಿಶ್ವಾಸದಿಂದ ಕಲಿಯಲಿ",
-    step3_p: "ನಾವು ಮಾರ್ಗದರ್ಶನ ಮಾಡುತ್ತೇವೆ — ನೇರ ಉತ್ತರ ಕೊಡಲ್ಲ. ಮಗು ತಾನೇ ಪ್ರಯತ್ನಿಸಲಿ, ಅರ್ಥ ಮಾಡಿಕೊಳ್ಳಲಿ.",
-    why_label: "Edupanion ಯಾಕೆ?",
-    why_title: "ರೋಬೋಟ್ ಅಲ್ಲ, ಟ್ಯೂಷನ್ ಅಲ್ಲ — ಅದಕ್ಕಿಂತ ಉತ್ತಮ.",
-    why1_h: "ಕನ್ನಡ + English ಬೆಂಬಲ",
-    why1_p: "ಮಗು ಯಾವ ಭಾಷೆಯಲ್ಲಿ ಸಹಜ ಅನ್ನಿಸುತ್ತದೆಯೋ ಅದರಲ್ಲಿ ಕೇಳಬಹುದು. ನಾವು ಅದೇ ಭಾಷೆಯಲ್ಲಿ ಉತ್ತರಿಸುತ್ತೇವೆ.",
-    why2_h: "ವಾರದ ಪೋಷಕ ಅಪ್‌ಡೇಟ್",
-    why2_p: "ಪ್ರತಿ ಭಾನುವಾರ ಸಾರಾಂಶ ಸಿಗುತ್ತದೆ — ಏನು ಕೇಳಿದರು, ಏನು ಅಭ್ಯಾಸ ಬೇಕು, ಭಾಗವಹಿಸುವಿಕೆ ಹೇಗಿದೆ.",
-    why3_h: "Human + AI, ಕೇವಲ AI ಅಲ್ಲ",
-    why3_p: "AI ನಮಗೆ ತಯಾರಿ ಮಾಡಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ. ನಿಮ್ಮ ಮಗುವಿಗೆ ನೈಜ ಮನುಷ್ಯ ಉತ್ತರಿಸುತ್ತಾರೆ. ಆತ್ಮೀಯ. ಉತ್ಸಾಹಕ. ನಂಬಿಗಸ್ತ.",
-    update_label: "ವಾರದ ಪೋಷಕ ಅಪ್‌ಡೇಟ್ — ಮಾದರಿ",
-    update_body: "ನಮಸ್ಕಾರ ಮೇಡಂ 🙏<br><br>ಈ ವಾರ ಆರವ್ ಮುಖ್ಯವಾಗಿ <strong>ಗಣಿತ (ಭಿನ್ನರಾಶಿ)</strong> ಮತ್ತು <strong>ವಿಜ್ಞಾನ (ಬಲ ಮತ್ತು ಚಲನೆ)</strong> ಅನುಮಾನಗಳನ್ನು ಕೇಳಿದ.<br><br>ಪರಿಕಲ್ಪನೆಗಳು ಅರ್ಥಮಾಡಿಕೊಳ್ಳುತ್ತಾನೆ ಆದರೆ ಶಬ್ದ ಸಮಸ್ಯೆಗಳಲ್ಲಿ ಹೆಚ್ಚು ಅಭ್ಯಾಸ ಬೇಕು.<br><br><strong>ಸೂಚಿತ ಗಮನ:</strong><br>• ಗುಣಾಕಾರ ಪಟ್ಟಿ ಪುನರಾವರ್ತನೆ (6, 7, 8)<br>• ದಿನಕ್ಕೆ 2–3 ಶಬ್ದ ಸಮಸ್ಯೆ ಬಿಡಿಸಿ<br><br>ಈ ವಾರ ಒಟ್ಟಾರೆ ಭಾಗವಹಿಸುವಿಕೆ ತುಂಬಾ ಚೆನ್ನಾಗಿತ್ತು 👍",
-    price_label: "ಬೆಲೆ",
-    price_title: "ಸರಳ, ಪ್ರಾಮಾಣಿಕ ಬೆಲೆ.",
-    price_sub: "ಒಂದು ಘಂಟೆ ಟ್ಯೂಷನ್‌ಗಿಂತ ಕಡಿಮೆ. ಯಾವ ಗುಪ್ತ ಶುಲ್ಕ ಇಲ್ಲ. ಯಾವಾಗ ಬೇಕಾದರೂ ರದ್ದು ಮಾಡಿ.",
-    plan1_name: "ಸ್ಟ್ಯಾಂಡರ್ಡ್",
-    plan2_name: "ಪ್ರಯಾರಿಟಿ",
-    per_month: "ತಿಂಗಳಿಗೆ",
-    per_month2: "ತಿಂಗಳಿಗೆ",
-    popular_badge: "ಅತ್ಯಂತ ಜನಪ್ರಿಯ",
-    f1_1:"ದಿನಕ್ಕೆ 2-3 ಅನುಮಾನ ಪರಿಹಾರ", f1_2:"ಗಣಿತ & ವಿಜ್ಞಾನ ಅನುಮಾನ", f1_3:"ಟೆಕ್ಸ್ಟ್ ವಿವರಣೆ", f1_4:"ಸಂಜೆ 6–8 ಬೆಂಬಲ", f1_5:"1–3 ಗಂಟೆಯಲ್ಲಿ ಉತ್ತರ", f1_6:"CBSE + State Board",
-    f2_1:"ಖಾಸಗಿ WhatsApp ಚಾಟ್", f2_2:"ಎಲ್ಲ ವಿಷಯಗಳು ಒಳಗೊಂಡಿವೆ", f2_3:"Voice note ವಿವರಣೆ", f2_4:"ರಾತ್ರಿ 10 ವರೆಗೆ ಬೆಂಬಲ", f2_5:"10–20 ನಿಮಿಷದಲ್ಲಿ ಉತ್ತರ", f2_6:"ವಾರದ ಪೋಷಕ ಅಪ್‌ಡೇಟ್",
-    trial_btn: "ಉಚಿತ ಟ್ರಯಲ್ ಪ್ರಾರಂಭಿಸಿ",
-    trial_btn2: "ಉಚಿತ ಟ್ರಯಲ್ ಪ್ರಾರಂಭಿಸಿ",
-    trial_note: "✨ ಎರಡೂ ಪ್ಲಾನ್‌ಗಳಲ್ಲಿ 3 ದಿನ ಉಚಿತ ಟ್ರಯಲ್ ಇದೆ. ಪ್ರಾರಂಭಿಸಲು ಯಾವ ಪಾವತಿ ಬೇಡ.",
-    testi_label: "ಪೋಷಕರ ಅನುಭವಗಳು",
-    testi_title: "ಪೋಷಕರು ಏನು ಹೇಳುತ್ತಾರೆ.",
-    testi_sub: "ನಿಜ ಕುಟುಂಬಗಳು. ನಿಜ ಫಲಿತಾಂಶಗಳು.",
-    t1_text: '"ನನ್ನ ಮಗಳು ಪ್ರತಿ ಸಂಜೆ ಗಣಿತ ಹೋಮ್‌ವರ್ಕ್ ಬಿಡುತ್ತಿದ್ದಳು. ಈಗ Edupanion ಗೆ ಮೆಸೇಜ್ ಮಾಡಿ ತಾನೇ ಬಿಡಿಸುತ್ತಾಳೆ. ಆಕೆಯ ಆತ್ಮವಿಶ್ವಾಸ ಸಂಪೂರ್ಣ ಬದಲಾಗಿದೆ."',
-    t1_sub: "ತಾಯಿ, ತರಗತಿ 7 · ದಾವಣಗೆರೆ",
-    t2_text: '"ನಾನು ತಡವಾಗಿ ಮನೆಗೆ ಬರುತ್ತೇನೆ, ಹೋಮ್‌ವರ್ಕ್ ಸಹಾಯ ಮಾಡಲು ಆಗಲ್ಲ. Edupanion ಆ ಕೊರತೆ ಮುಚ್ಚುತ್ತದೆ. ಕನ್ನಡದಲ್ಲಿ ವಿವರಿಸುವುದು ಮಗನಿಗೆ ತುಂಬಾ ಸಹಾಯಕ."',
-    t2_sub: "ತಂದೆ, ತರಗತಿ 6 · ಹುಬ್ಬಳ್ಳಿ",
-    t3_text: '"ಭಾನುವಾರದ ಅಪ್‌ಡೇಟ್ ತುಂಬಾ ಉಪಯುಕ್ತ. ಈಗ ನನಗೆ ತಿಳಿಯುತ್ತದೆ ಮಗು ಯಾವ ವಿಷಯದಲ್ಲಿ ಕಷ್ಟ ಪಡುತ್ತಿದ್ದಾನೆ ಎಂದು. ₹499 ಪ್ಲಾನ್ ಪೂರ್ತಿ ಸಾರ್ಥಕ."',
-    t3_sub: "ತಾಯಿ, ತರಗತಿ 8 · ಶಿವಮೊಗ್ಗ",
-    faq_label: "ಸಾಮಾನ್ಯ ಪ್ರಶ್ನೆಗಳು",
-    faq_title: "ಪೋಷಕರು ಕೇಳುವ ಪ್ರಶ್ನೆಗಳು.",
-    faq1_q: "Edupanion ಒಂದು AI ಬಾಟ್ ಆ?",
-    faq1_a: "ಇಲ್ಲ. ನಾವು AI ಅನ್ನು ಒಳಗಡೆ ಮಾತ್ರ ಬಳಸುತ್ತೇವೆ — ಆದರೆ ನಿಮ್ಮ ಮಗುವಿಗೆ ಪ್ರತಿ ಉತ್ತರ ಒಬ್ಬ ನಿಜ ಮನುಷ್ಯನಿಂದ ಬರುತ್ತದೆ. ಆತ್ಮೀಯ ಸ್ಪರ್ಶ ಯಾವಾಗಲೂ ಇರುತ್ತದೆ.",
-    faq2_q: "ಯಾವ ತರಗತಿ ಮತ್ತು ವಿಷಯಗಳು ಒಳಗೊಂಡಿವೆ?",
-    faq2_a: "ಪ್ರಸ್ತುತ ತರಗತಿ 6, 7 ಮತ್ತು 8 ಗಣಿತ ಮತ್ತು ವಿಜ್ಞಾನ (ಎರಡೂ ಪ್ಲಾನ್). Priority ಪ್ಲಾನ್‌ನಲ್ಲಿ English, ಸಮಾಜ ವಿಜ್ಞಾನ ಮತ್ತು ಕನ್ನಡ ಕೂಡ ಸೇರಿದೆ.",
-    faq3_q: "ಬೆಂಬಲದ ಸಮಯ ಯಾವುದು?",
-    faq3_a: "Standard: ಸಂಜೆ 6–8. Priority: ಸಂಜೆ 6 – ರಾತ್ರಿ 10. ಶಾಲಾ ಸಮಯದಲ್ಲಿ ನಾವು ಆಫ್‌ಲೈನ್ ಇರುತ್ತೇವೆ.",
-    faq4_q: "ನೀವು ನೇರ ಉತ್ತರ ಕೊಡುತ್ತೀರಾ?",
-    faq4_a: "ಎಂದಿಗೂ ಇಲ್ಲ. ನಮ್ಮ ಉದ್ದೇಶ guided learning — ಉತ್ತರ ಕೊಡುವುದಲ್ಲ. ಪರಿಕಲ್ಪನೆ ವಿವರಿಸಿ ಮಗು ತಾನೇ ಪ್ರಯತ್ನಿಸಲು ಪ್ರೋತ್ಸಾಹಿಸುತ್ತೇವೆ.",
-    faq5_q: "ಇದು ಟ್ಯೂಷನ್ ಬದಲಿಯಾ?",
-    faq5_a: "ಇಲ್ಲ — ನಾವು ಸಂಜೆ ಅಧ್ಯಯನ ಸಂಗಾತಿ. ಟ್ಯೂಷನ್ ಇದ್ದರೆ, ರಾತ್ರಿ ಕೊರತೆ ನಾವು ತುಂಬುತ್ತೇವೆ.",
-    faq6_q: "ಪಾವತಿ ಹೇಗೆ?",
-    faq6_a: "3 ದಿನ ಉಚಿತ ಟ್ರಯಲ್ ನಿಂದ ಪ್ರಾರಂಭಿಸಿ — ಯಾವ ಪಾವತಿ ಬೇಡ. ನಂತರ UPI / Google Pay / PhonePe ಮೂಲಕ. WhatsApp ನಲ್ಲಿ ವಿವರ ಕಳುಹಿಸುತ್ತೇವೆ.",
-    cta_h: "ನಿಮ್ಮ ಮಗುವಿನ ಅತ್ಯುತ್ತಮ ಅಧ್ಯಯನ ಸಂಜೆ ಇಂದು ರಾತ್ರಿ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ.",
-    cta_sub: "3 ದಿನ ಉಚಿತ ಟ್ರಯಲ್ ಸೇರಿ. ಕ್ರೆಡಿಟ್ ಕಾರ್ಡ್ ಇಲ್ಲ. ಆ್ಯಪ್ ಡೌನ್‌ಲೋಡ್ ಇಲ್ಲ. ಬರೀ WhatsApp.",
-    cta_btn: "WhatsApp ನಲ್ಲಿ ಉಚಿತ ಟ್ರಯಲ್ ಪ್ರಾರಂಭಿಸಿ",
-    cta_note: "ಸಮಯ: ಸಂಜೆ 6 – ರಾತ್ರಿ 10 · Class 6–8 · CBSE & State Board · ಕನ್ನಡ & English",
-    footer_copy: "ಭಾರತೀಯ ಶಾಲಾ ಮಕ್ಕಳಿಗೆ ಸಂಜೆ ಅಧ್ಯಯನ ಬೆಂಬಲ. © 2026 edupanion.in"
-  }
+const T={
+en:{nav_cta:"Start Free Trial",badge:"Classes 1–8 · WhatsApp · Evening Support",h1:'Homework & study help for <em>Classes 1–8</em>, on WhatsApp 😊',sub:"Friendly support every evening from 6 PM to 10 PM. Simple explanations, step-by-step guidance — in English and Kannada.",kn_line:"ಪ್ರತಿ ಸಂಜೆ ನಿಮ್ಮ ಮಗುವಿಗೆ ಸಹಾಯ ಮಾಡಲು ನಾವಿದ್ದೇವೆ 🙏",cta1:"Start 3-Day Free Trial",cta2:"How It Works ↓",tp1:"No payment to start",tp2:"Kannada + English",tp3:"Real human support",chat_lbl:"💬 A real evening session",chat_st:"Online · 6 PM – 10 PM 🟢",ch_s:"Student (Class 5)",ch_t:"Edupanion 😊",ch_q1:"Teacher gave this: 4/5 + 2/3 = ? I'm confused 😕",ch_a1:"No worries! Step by step 🙂<br>4/5 → ×3 → 12/15 &nbsp; 2/3 → ×5 → 10/15<br>12/15 + 10/15 = <b>22/15</b> = 1 and 7/15 ✅<br>You try: 1/4 + 1/2 = ?",ch_q2:"Is it 3/4? 😊",ch_a2:"Yes!! Perfect!! 🎉 Well done! ⭐",how_lbl:"How It Works",how_ttl:"Simple as sending a WhatsApp message 📱",how_sub:"Your child types their doubt, gets a warm step-by-step reply, and learns to solve it themselves.",s1t:"Send the Doubt",s1d:"Child sends a photo or message of the question. Any subject, any board, Classes 1 to 8.",s2t:"Get a Simple Explanation",s2d:"We reply with a friendly step-by-step explanation — not just the answer. We help them think.",s3t:"Learn with Confidence",s3d:"Child solves it themselves, feels proud. Homework stress goes down.",cls_lbl:"What We Cover",cls_ttl:"Support for every class, every level",cls_sub:"Whether your child is learning to read or solving algebra — we are here every evening.",jr_tag:"Classes 1 – 5",jr_ttl:"Building the Foundation",jr_sub:"Gentle, patient support for young learners.",j1:"Reading comprehension and basic English",j2:"Maths — addition, subtraction, tables, fractions",j3:"Homework completion support",j4:"EVS and basic General Knowledge",j5:"Explained simply in Kannada or English",j6:"Warm tone — every question is welcome",sr_tag:"Classes 6 – 8",sr_ttl:"Deeper Learning",sr_sub:"Concept clarity, doubt solving and exam prep.",s1:"Maths — algebra, geometry, integers, fractions",s2:"Science — concepts, experiments, diagrams",s3:"English grammar, comprehension, writing",s4:"Social Science — history, geography, civics",s5:"Exam preparation and revision",s6:"CBSE, ICSE and Karnataka State Board",tr_lbl:"Why Parents Trust Us",tr_ttl:"Safe, simple and always kind 🙏",tr_sub:"Built for Indian families. Sensitive to how children learn.",t1t:"Safe for Children",t1d:"All conversations are strictly academic. Parents can view every chat at any time.",t2t:"Real Human Support",t2d:"Not a chatbot. A real person reads every doubt and replies with care.",t3t:"Kannada + English",t3d:"We explain in both languages. Kannada medium students are fully welcome.",t4t:"Weekly Parent Update",t4d:"Every Sunday we send a summary of what your child asked and how they are doing.",t5t:"No Direct Answers",t5d:"We guide children to think — never just copy. This is how real learning happens.",t6t:"Always Encouraging",t6d:"We never say 'wrong'. We say 'almost there, let's try again'.",ex_lbl:"Real Examples",ex_ttl:"Edupanion in action 💬",ex_sub:"These are the kinds of doubts we help with every evening.",ex1h:"Class 2 · Maths",lbl_s:"Student",lbl_t:"Edupanion 😊",ex1q:"What is 8 × 7? I forget the table 😟",ex1a:"8×7 = 8×5 + 8×2 = 40+16 = <b>56</b>! Try: 6×7 = ? ✍️",ex2h:"Class 7 · Science",lbl_s2:"Student",lbl_t2:"Edupanion 😊",ex2q:"What is photosynthesis? Didn't understand teacher's explanation",ex2a:"Think of the leaf as a little kitchen 🌿 Sunlight + water + CO₂ → food + oxygen. What are the 'ingredients'?",ex3h:"Class 4 · English",lbl_s3:"Student",lbl_t3:"Edupanion 😊",ex3q:"ಅಕ್ಕ ಹೇಳಿದ್ರು noun ಅಂದ್ರೇನು ಅಂತ ಗೊತ್ತಿಲ್ಲ",ex3a:"Noun = ಹೆಸರು! Rahul, Bengaluru, pen — ಎಲ್ಲವೂ noun 😊",ex4h:"Class 6 · Maths",lbl_s4:"Student",lbl_t4:"Edupanion 😊",ex4q:"LCM of 12 and 18? I don't know how",ex4a:"12: 12,24,<b>36</b>... 18: 18,<b>36</b>... LCM = 36 ✅ Now you: LCM of 4 and 6?",pr_lbl:"Plans & Pricing",pr_ttl:"Less than one hour of tuition 💚",pr_sub:"No contracts. No auto-debit. Cancel anytime. 3-day free trial included.",p1n:"STANDARD",p1p:"per month",f1:"2–3 Doubts Helped Daily",f2:"Maths & Science doubts",f3:"Text explanations",f4:"6 PM – 8 PM support",f5:"Response in 1–3 hours",f6:"CBSE + State Board",btn1:"Start Free Trial",p2n:"PRIORITY",p2p:"per month",pop_b:"MOST POPULAR",g1:"Unlimited doubts daily",g2:"All subjects — Maths, Science, English, SST",g3:"Text + Voice explanations",g4:"6 PM – 10 PM support",g5:"Response in 10–20 minutes",g6:"Weekly parent progress update",g7:"CBSE, ICSE + State Board",btn2:"Start Free Trial",ts_lbl:"Parent Stories",ts_ttl:"Families who found peace at 8 PM 😊",ts1:'"My Class 3 daughter used to cry every night with homework. Now she messages Edupanion and comes to dinner smiling."',ta1:"Savitha K.",tr1:"Mother · Mysuru · Class 3",ts2:'"My son is in Class 7 and I can\'t help with his Maths anymore. Edupanion explains so simply, even I understand!"',ta2:"Ravi Reddy",tr2:"Father · Bengaluru · Class 7",ts3:'"I was worried about my child chatting with strangers. But every conversation is academic and so kind."',ta3:"Meena Sharma",tr3:"Mother · Hubli · Class 5",fq_lbl:"Common Questions",fq_ttl:"Questions parents usually ask",q1:"Is this an AI chatbot or a real person?",a1:"A real person. Every message your child receives is reviewed and sent by a human. Always warm, always personal.",q2:"Is it safe for my child to chat on WhatsApp?",a2:"Completely. All conversations are strictly academic. Parents can view the chat anytime. We never ask for personal info beyond name and class.",q3:"Which classes and boards do you support?",a3:"Classes 1 to 8 — CBSE, ICSE and Karnataka State Board. English and Kannada medium. Standard covers Maths & Science. Priority covers all subjects.",q4:"Do you give direct answers to homework?",a4:"Never. We explain, guide, and then ask the child to try. This is how they learn for exams — not just today's homework.",q5:"How do I pay? Is there a contract?",a5:"UPI — Google Pay, PhonePe or Paytm. Monthly only. No contracts. No auto-debit. Start with the 3-day free trial, no payment needed.",q6:"My child already uses ChatGPT. Why pay for this?",a6:"ChatGPT gives direct answers — children copy without understanding. In exams there's no ChatGPT. Edupanion teaches HOW to think. Better school performance, real confidence.",cta_h:"Start your child's free trial today 🌟",cta_p:"3 days, no payment, no commitment. Just send a WhatsApp message.",cta_kn:"ಇಂದೇ ಪ್ರಾರಂಭಿಸಿ — ಮೊದಲ 3 ದಿನ ಉಚಿತ 🙏",cta_btn:"Start Free Trial on WhatsApp",ft:"Evening study support for Indian school children. © 2026 edupanion.in"},
+hi:{nav_cta:"निःशुल्क ट्रायल शुरू करें",badge:"कक्षा 1–8 · WhatsApp · शाम की सहायता",h1:'कक्षा 1–8 के बच्चों के लिए <em>WhatsApp</em> पर होमवर्क मदद 😊',sub:"हर शाम 6 से 10 बजे। सरल समझाइश, दोस्ताना मार्गदर्शन — हिन्दी और अंग्रेज़ी में।",kn_line:"ಪ್ರತಿ ಸಂಜೆ ನಿಮ್ಮ ಮಗುವಿಗೆ ಸಹಾಯ ಮಾಡಲು ನಾವಿದ್ದೇವೆ 🙏",cta1:"3 दिन का मुफ्त ट्रायल शुरू करें",cta2:"कैसे काम करता है ↓",tp1:"शुरुआत मुफ्त",tp2:"हिन्दी + अंग्रेज़ी",tp3:"असली इंसान की मदद",chat_lbl:"💬 एक सत्र कैसा दिखता है",chat_st:"ऑनलाइन · शाम 6 – 10 बजे 🟢",ch_s:"छात्र (कक्षा 5)",ch_t:"Edupanion 😊",ch_q1:"4/5 + 2/3 = ? समझ नहीं आया 😕",ch_a1:"चिंता नहीं! 🙂<br>4/5 → ×3 → 12/15 &nbsp; 2/3 → ×5 → 10/15<br>12/15 + 10/15 = <b>22/15</b> ✅<br>अब तुम: 1/4 + 1/2 = ?",ch_q2:"क्या 3/4 है? 😊",ch_a2:"हाँ!! बिल्कुल सही! 🎉 शाबाश! ⭐",how_lbl:"कैसे काम करता है",how_ttl:"WhatsApp पर मैसेज जितना आसान 📱",how_sub:"बच्चा अपना सवाल WhatsApp पर भेजे — सरल, चरण-दर-चरण उत्तर पाए।",s1t:"सवाल भेजें",s1d:"बच्चा होमवर्क का फोटो या मैसेज WhatsApp पर भेजे। कोई भी विषय, कोई भी बोर्ड।",s2t:"सरल समझाइश पाएं",s2d:"हम दोस्ताना, चरण-दर-चरण समझाइश देते हैं — सिर्फ उत्तर नहीं।",s3t:"आत्मविश्वास से सीखें",s3d:"बच्चा खुद हल करे और गर्व महसूस करे। होमवर्क का तनाव कम हो।",cls_lbl:"हम क्या सिखाते हैं",cls_ttl:"हर कक्षा, हर स्तर के लिए सहायता",cls_sub:"चाहे बच्चा पढ़ना सीख रहा हो या बीजगणित — हम यहाँ हैं।",jr_tag:"कक्षा 1 – 5",jr_ttl:"नींव बनाना",jr_sub:"छोटे बच्चों के लिए धैर्यपूर्ण सहायता।",j1:"पठन और बुनियादी अंग्रेज़ी",j2:"गणित — जोड़, घटाव, पहाड़ा, भिन्न",j3:"होमवर्क पूरा करने में सहायता",j4:"पर्यावरण और सामान्य ज्ञान",j5:"हिन्दी या अंग्रेज़ी में सरल समझाइश",j6:"प्रोत्साहन भरा माहौल",sr_tag:"कक्षा 6 – 8",sr_ttl:"गहरा सीखना",sr_sub:"अवधारणा स्पष्टता, संशय समाधान और परीक्षा तैयारी।",s1:"गणित — बीजगणित, ज्यामिति, भिन्न",s2:"विज्ञान — अवधारणाएं, प्रयोग",s3:"अंग्रेज़ी व्याकरण, बोध, लेखन",s4:"सामाजिक विज्ञान — इतिहास, भूगोल",s5:"परीक्षा तैयारी और पुनरावृत्ति",s6:"CBSE, ICSE और State Board",tr_lbl:"माता-पिता हम पर क्यों भरोसा करते हैं",tr_ttl:"सुरक्षित, सरल और दयालु 🙏",tr_sub:"भारतीय परिवारों के लिए बनाया गया।",t1t:"बच्चों के लिए सुरक्षित",t1d:"सभी बातचीत शैक्षणिक है। माता-पिता कभी भी चैट देख सकते हैं।",t2t:"असली इंसान की मदद",t2d:"चैटबॉट नहीं। एक असली इंसान हर सवाल पढ़ता है।",t3t:"हिन्दी + अंग्रेज़ी",t3d:"हम दोनों भाषाओं में समझाते हैं।",t4t:"साप्ताहिक माता-पिता अपडेट",t4d:"हर रविवार प्रगति का सारांश भेजते हैं।",t5t:"सीधे उत्तर नहीं",t5d:"बच्चों को सोचना सिखाते हैं।",t6t:"हमेशा प्रोत्साहित करते हैं",t6d:"हम कभी 'गलत' नहीं कहते। 'लगभग सही' कहते हैं।",ex_lbl:"असली उदाहरण",ex_ttl:"Edupanion काम करते हुए 💬",ex_sub:"हर शाम ऐसे सवालों में मदद करते हैं।",ex1h:"कक्षा 2 · गणित",lbl_s:"छात्र",lbl_t:"Edupanion 😊",ex1q:"8 × 7 क्या है? पहाड़ा याद नहीं 😟",ex1a:"8×5+8×2 = 40+16 = <b>56</b>! अब तुम: 6×7 = ? ✍️",ex2h:"कक्षा 7 · विज्ञान",lbl_s2:"छात्र",lbl_t2:"Edupanion 😊",ex2q:"प्रकाश संश्लेषण क्या है?",ex2a:"पत्ते को रसोई मानो 🌿 सूरज+पानी+CO₂ → खाना+ऑक्सीजन। सामग्री क्या है?",ex3h:"कक्षा 4 · अंग्रेज़ी",lbl_s3:"छात्र",lbl_t3:"Edupanion 😊",ex3q:"Noun क्या होता है?",ex3a:"Noun = नाम! Rahul, Delhi, pen — सब Noun हैं 😊",ex4h:"कक्षा 6 · गणित",lbl_s4:"छात्र",lbl_t4:"Edupanion 😊",ex4q:"12 और 18 का LCM?",ex4a:"12: 12,24,<b>36</b>... 18: 18,<b>36</b>... LCM = 36 ✅",pr_lbl:"योजनाएं और कीमत",pr_ttl:"एक ट्यूशन घंटे से सस्ता 💚",pr_sub:"कोई अनुबंध नहीं। कोई ऑटो-डेबिट नहीं। 3 दिन मुफ्त ट्रायल।",p1n:"स्टैंडर्ड",p1p:"प्रति माह",f1:"दिन में 2-3 संशय हल",f2:"गणित और विज्ञान",f3:"टेक्स्ट समझाइश",f4:"शाम 6–8 बजे",f5:"1–3 घंटे में जवाब",f6:"CBSE + State Board",btn1:"मुफ्त ट्रायल शुरू करें",p2n:"प्राथमिकता",p2p:"प्रति माह",pop_b:"सबसे लोकप्रिय",g1:"असीमित संशय",g2:"सभी विषय",g3:"टेक्स्ट + वॉयस नोट",g4:"शाम 6–10 बजे",g5:"10–20 मिनट में जवाब",g6:"साप्ताहिक माता-पिता अपडेट",g7:"CBSE, ICSE + State Board",btn2:"मुफ्त ट्रायल शुरू करें",ts_lbl:"माता-पिता की बातें",ts_ttl:"जिन परिवारों को रात 8 बजे चैन मिला 😊",ts1:'"मेरी कक्षा 3 की बेटी हर रात होमवर्क से रोती थी। अब वो Edupanion को मैसेज करती है और मुस्कुराते हुए खाने पर आती है।"',ta1:"सविता के.",tr1:"माँ · मैसूरु · कक्षा 3",ts2:'"मेरे बेटे का गणित मुझसे नहीं होता। Edupanion इतने सरल तरीके से समझाता है!"',ta2:"रवि रेड्डी",tr2:"पिता · बेंगलुरु · कक्षा 7",ts3:'"बातचीत बिल्कुल शैक्षणिक और दयालु है। बच्चा अब पढ़ाई का इंतज़ार करता है।"',ta3:"मीना शर्मा",tr3:"माँ · हुबली · कक्षा 5",fq_lbl:"सामान्य प्रश्न",fq_ttl:"माता-पिता आमतौर पर जो पूछते हैं",q1:"क्या यह AI चैटबॉट है?",a1:"नहीं, असली इंसान। हर संदेश एक व्यक्ति द्वारा भेजा जाता है।",q2:"WhatsApp पर बात करना सुरक्षित है?",a2:"बिल्कुल। सभी बातचीत शैक्षणिक है। माता-पिता कभी भी देख सकते हैं।",q3:"कौन सी कक्षाएं और बोर्ड?",a3:"कक्षा 1 से 8 — CBSE, ICSE, State Board। हिन्दी और अंग्रेज़ी दोनों माध्यम।",q4:"सीधे उत्तर देते हैं?",a4:"कभी नहीं। हम सोचना सिखाते हैं — नकल नहीं।",q5:"भुगतान कैसे? कोई अनुबंध?",a5:"UPI से। मासिक। कोई अनुबंध नहीं। 3 दिन मुफ्त।",q6:"बच्चा ChatGPT इस्तेमाल करता है। फर्क क्या है?",a6:"ChatGPT सीधे उत्तर देता है। परीक्षा में ChatGPT नहीं होगा। Edupanion सोचना सिखाता है।",cta_h:"आज ही मुफ्त ट्रायल शुरू करें 🌟",cta_p:"3 दिन, कोई भुगतान नहीं। WhatsApp पर मैसेज करें।",cta_kn:"ಇಂದೇ ಪ್ರಾರಂಭಿಸಿ — ಮೊದಲ 3 ದಿನ ಉಚಿತ 🙏",cta_btn:"WhatsApp पर मुफ्त ट्रायल",ft:"भारतीय स्कूल बच्चों के लिए शाम की सहायता। © 2026 edupanion.in"},
+kn:{nav_cta:"ಉಚಿತ ಟ್ರಯಲ್ ಪ್ರಾರಂಭಿಸಿ",badge:"ತರಗತಿ 1–8 · WhatsApp · ಸಂಜೆ ಬೆಂಬಲ",h1:'ತರಗತಿ 1–8 ಮಕ್ಕಳಿಗೆ <em>WhatsApp</em> ನಲ್ಲಿ ಹೋಮ್‌ವರ್ಕ್ ಸಹಾಯ 😊',sub:"ಪ್ರತಿ ಸಂಜೆ 6 ರಿಂದ 10 ಗಂಟೆ. ಸರಳ ವಿವರಣೆ, ಸ್ನೇಹಪರ ಮಾರ್ಗದರ್ಶನ. ಕನ್ನಡ ಮತ್ತು English.",kn_line:"ಪ್ರತಿ ಸಂಜೆ ನಿಮ್ಮ ಮಗುವಿಗೆ ಸಹಾಯ ಮಾಡಲು ನಾವಿದ್ದೇವೆ 🙏",cta1:"3 ದಿನ ಉಚಿತ ಟ್ರಯಲ್ ಪ್ರಾರಂಭಿಸಿ",cta2:"ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ ↓",tp1:"ಪ್ರಾರಂಭಿಸಲು ಪಾವತಿ ಬೇಡ",tp2:"ಕನ್ನಡ + English",tp3:"ನಿಜವಾದ ಮನುಷ್ಯ ಬೆಂಬಲ",chat_lbl:"💬 ಒಂದು ಸಂಜೆ ಸೆಷನ್",chat_st:"ಆನ್‌ಲೈನ್ · 6–10 PM 🟢",ch_s:"ವಿದ್ಯಾರ್ಥಿ (ತರಗತಿ 5)",ch_t:"Edupanion 😊",ch_q1:"4/5 + 2/3 = ? ಅರ್ಥ ಆಗಲಿಲ್ಲ 😕",ch_a1:"ಚಿಂತೆ ಬೇಡ! 🙂<br>4/5 → ×3 → 12/15 &nbsp; 2/3 → ×5 → 10/15<br>12/15 + 10/15 = <b>22/15</b> ✅<br>ನೀನು ಮಾಡು: 1/4 + 1/2 = ?",ch_q2:"3/4 ಆಗುತ್ತದೆಯಾ? 😊",ch_a2:"ಹೌದು!! ಸರಿಯಾಗಿದೆ! 🎉 ⭐",how_lbl:"ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ",how_ttl:"WhatsApp ಮೆಸೇಜ್ ಕಳುಹಿಸುವಷ್ಟು ಸರಳ 📱",how_sub:"ಮಗು ಅನುಮಾನ ಕಳುಹಿಸಲಿ — ಸ್ನೇಹಪರ ಹಂತ ಹಂತದ ವಿವರಣೆ ಸಿಗುತ್ತದೆ.",s1t:"ಅನುಮಾನ ಕಳುಹಿಸಿ",s1d:"ಮಗು WhatsApp ನಲ್ಲಿ ಪ್ರಶ್ನೆ ಕಳುಹಿಸಲಿ. ಯಾವ ವಿಷಯ, ಯಾವ ಬೋರ್ಡ್ ಆದರೂ ಸರಿ.",s2t:"ಸರಳ ವಿವರಣೆ ಪಡೆಯಿರಿ",s2d:"ಹಂತ ಹಂತದ ವಿವರಣೆ — ಕೇವಲ ಉತ್ತರ ಅಲ್ಲ. ಯೋಚಿಸಲು ಕಲಿಸುತ್ತೇವೆ.",s3t:"ಆತ್ಮವಿಶ್ವಾಸದಿಂದ ಕಲಿಯಿರಿ",s3d:"ಮಗು ತಾನೇ ಬಿಡಿಸಲಿ. ಹೋಮ್‌ವರ್ಕ್ ಒತ್ತಡ ಕಡಿಮೆ ಆಗಲಿ.",cls_lbl:"ನಾವು ಏನು ಕಲಿಸುತ್ತೇವೆ",cls_ttl:"ಪ್ರತಿ ತರಗತಿ, ಪ್ರತಿ ಹಂತಕ್ಕೆ ಬೆಂಬಲ",cls_sub:"ಮಗು ಓದಲು ಕಲಿಯುತ್ತಿರಲಿ ಅಥವಾ ಬೀಜಗಣಿತ ಮಾಡುತ್ತಿರಲಿ — ನಾವಿದ್ದೇವೆ.",jr_tag:"ತರಗತಿ 1 – 5",jr_ttl:"ಅಡಿಪಾಯ ಕಟ್ಟುವುದು",jr_sub:"ಚಿಕ್ಕ ಮಕ್ಕಳಿಗೆ ತಾಳ್ಮೆಯ ಬೆಂಬಲ.",j1:"ಓದುವಿಕೆ ಮತ್ತು ಮೂಲ English",j2:"ಗಣಿತ — ಕೂಡಿಸುವಿಕೆ, ಕಳೆಯುವಿಕೆ, ಭಾಗಿಸುವಿಕೆ",j3:"ಹೋಮ್‌ವರ್ಕ್ ಪೂರ್ಣ ಮಾಡಲು ಸಹಾಯ",j4:"EVS ಮತ್ತು ಸಾಮಾನ್ಯ ಜ್ಞಾನ",j5:"ಕನ್ನಡ ಅಥವಾ English ನಲ್ಲಿ ಸರಳ ವಿವರಣೆ",j6:"ಪ್ರೋತ್ಸಾಹದ ವಾತಾವರಣ",sr_tag:"ತರಗತಿ 6 – 8",sr_ttl:"ಆಳವಾದ ಕಲಿಕೆ",sr_sub:"ಪರಿಕಲ್ಪನೆ ಸ್ಪಷ್ಟತೆ ಮತ್ತು ಪರೀಕ್ಷೆ ತಯಾರಿ.",s1:"ಗಣಿತ — ಬೀಜಗಣಿತ, ರೇಖಾಗಣಿತ",s2:"ವಿಜ್ಞಾನ — ಪರಿಕಲ್ಪನೆ, ಪ್ರಯೋಗ",s3:"English ವ್ಯಾಕರಣ, ಬೋಧನೆ",s4:"ಸಮಾಜ ವಿಜ್ಞಾನ — ಇತಿಹಾಸ, ಭೂಗೋಳ",s5:"ಪರೀಕ್ಷೆ ತಯಾರಿ",s6:"CBSE, ICSE ಮತ್ತು State Board",tr_lbl:"ಪೋಷಕರು ನಮ್ಮನ್ನು ಏಕೆ ನಂಬುತ್ತಾರೆ",tr_ttl:"ಸುರಕ್ಷಿತ, ಸರಳ ಮತ್ತು ದಯಾಳು 🙏",tr_sub:"ಭಾರತೀಯ ಕುಟುಂಬಗಳಿಗಾಗಿ ರಚಿಸಲಾಗಿದೆ.",t1t:"ಮಕ್ಕಳಿಗೆ ಸುರಕ್ಷಿತ",t1d:"ಎಲ್ಲ ಸಂಭಾಷಣೆ ಶೈಕ್ಷಣಿಕ. ಪೋಷಕರು ಯಾವಾಗ ಬೇಕಾದರೂ ನೋಡಬಹುದು.",t2t:"ನಿಜವಾದ ಮನುಷ್ಯ ಬೆಂಬಲ",t2d:"ಚಾಟ್‌ಬಾಟ್ ಅಲ್ಲ. ನಿಜವಾದ ವ್ಯಕ್ತಿ ಪ್ರತಿ ಅನುಮಾನ ಓದಿ ಉತ್ತರಿಸುತ್ತಾರೆ.",t3t:"ಕನ್ನಡ + English",t3d:"ಎರಡೂ ಭಾಷೆಗಳಲ್ಲಿ ವಿವರಿಸುತ್ತೇವೆ. ಕನ್ನಡ ಮಾಧ್ಯಮ ಮಕ್ಕಳಿಗೆ ಸ್ವಾಗತ.",t4t:"ವಾರಕ್ಕೊಮ್ಮೆ ಅಪ್‌ಡೇಟ್",t4d:"ಪ್ರತಿ ಭಾನುವಾರ ಮಗುವಿನ ಪ್ರಗತಿ ಕಳುಹಿಸುತ್ತೇವೆ.",t5t:"ನೇರ ಉತ್ತರ ಕೊಡಲ್ಲ",t5d:"ಯೋಚಿಸಲು ಕಲಿಸುತ್ತೇವೆ — ನಕಲು ಮಾಡಿಸಲ್ಲ.",t6t:"ಯಾವಾಗಲೂ ಪ್ರೋತ್ಸಾಹ",t6d:"'ತಪ್ಪು' ಎನ್ನಲ್ಲ. 'ಬಹುತೇಕ ಸರಿ, ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸು' ಎನ್ನುತ್ತೇವೆ.",ex_lbl:"ನಿಜವಾದ ಉದಾಹರಣೆಗಳು",ex_ttl:"Edupanion ಕೆಲಸ ಮಾಡುವುದನ್ನು ನೋಡಿ 💬",ex_sub:"ಪ್ರತಿ ಸಂಜೆ ಇಂಥ ಅನುಮಾನಗಳಿಗೆ ಸಹಾಯ ಮಾಡುತ್ತೇವೆ.",ex1h:"ತರಗತಿ 2 · ಗಣಿತ",lbl_s:"ವಿದ್ಯಾರ್ಥಿ",lbl_t:"Edupanion 😊",ex1q:"8 × 7 ಎಷ್ಟು? ಗುಣಾಕಾರ ಮರೆತಿದೆ 😟",ex1a:"8×5+8×2 = 40+16 = <b>56</b>! ನೀನು: 6×7 = ? ✍️",ex2h:"ತರಗತಿ 7 · ವಿಜ್ಞಾನ",lbl_s2:"ವಿದ್ಯಾರ್ಥಿ",lbl_t2:"Edupanion 😊",ex2q:"ದ್ಯುತಿಸಂಶ್ಲೇಷಣೆ ಎಂದರೇನು?",ex2a:"ಎಲೆ = ಅಡುಗೆಮನೆ 🌿 ಬೆಳಕು+ನೀರು+CO₂ → ಆಹಾರ+ಆಮ್ಲಜನಕ. ಪದಾರ್ಥಗಳು ಯಾವವು?",ex3h:"ತರಗತಿ 4 · English",lbl_s3:"ವಿದ್ಯಾರ್ಥಿ",lbl_t3:"Edupanion 😊",ex3q:"ಅಕ್ಕ ಹೇಳಿದ್ರು noun ಅಂದ್ರೇನು ಅಂತ ಗೊತ್ತಿಲ್ಲ",ex3a:"Noun = ಹೆಸರು! Rahul, Bengaluru, pen — ಎಲ್ಲವೂ noun 😊",ex4h:"ತರಗತಿ 6 · ಗಣಿತ",lbl_s4:"ವಿದ್ಯಾರ್ಥಿ",lbl_t4:"Edupanion 😊",ex4q:"12 ಮತ್ತು 18 ರ LCM?",ex4a:"12: 12,24,<b>36</b>... 18: 18,<b>36</b>... LCM = 36 ✅",pr_lbl:"ಯೋಜನೆಗಳು ಮತ್ತು ಬೆಲೆ",pr_ttl:"ಒಂದು ಟ್ಯೂಷನ್ ಗಂಟೆಗಿಂತ ಕಡಿಮೆ 💚",pr_sub:"ಯಾವ ಒಪ್ಪಂದ ಇಲ್ಲ. 3 ದಿನ ಉಚಿತ ಟ್ರಯಲ್.",p1n:"ಸ್ಟ್ಯಾಂಡರ್ಡ್",p1p:"ತಿಂಗಳಿಗೆ",f1:"ದಿನಕ್ಕೆ 2-3 ಅನುಮಾನ ಪರಿಹಾರ",f2:"ಗಣಿತ & ವಿಜ್ಞಾನ",f3:"ಟೆಕ್ಸ್ಟ್ ವಿವರಣೆ",f4:"ಸಂಜೆ 6–8 ಬೆಂಬಲ",f5:"1–3 ಗಂಟೆಯಲ್ಲಿ ಉತ್ತರ",f6:"CBSE + State Board",btn1:"ಉಚಿತ ಟ್ರಯಲ್ ಪ್ರಾರಂಭಿಸಿ",p2n:"ಪ್ರಾಥಮಿಕ",p2p:"ತಿಂಗಳಿಗೆ",pop_b:"ಅತ್ಯಂತ ಜನಪ್ರಿಯ",g1:"ಅಪರಿಮಿತ ಅನುಮಾನಗಳು",g2:"ಎಲ್ಲ ವಿಷಯಗಳು",g3:"ಟೆಕ್ಸ್ಟ್ + ವಾಯ್ಸ್ ನೋಟ್",g4:"ಸಂಜೆ 6–10 ಬೆಂಬಲ",g5:"10–20 ನಿಮಿಷದಲ್ಲಿ ಉತ್ತರ",g6:"ವಾರಕ್ಕೊಮ್ಮೆ ಪೋಷಕ ಅಪ್‌ಡೇಟ್",g7:"CBSE, ICSE + State Board",btn2:"ಉಚಿತ ಟ್ರಯಲ್ ಪ್ರಾರಂಭಿಸಿ",ts_lbl:"ಪೋಷಕರ ಅನುಭವಗಳು",ts_ttl:"ರಾತ್ರಿ 8 ಗಂಟೆಗೆ ಶಾಂತಿ ಸಿಕ್ಕ ಕುಟುಂಬಗಳು 😊",ts1:'"ನನ್ನ ತರಗತಿ 3 ಮಗಳು ಪ್ರತಿ ರಾತ್ರಿ ಅಳುತ್ತಿದ್ದಳು. ಈಗ Edupanion ಗೆ ಮೆಸೇಜ್ ಮಾಡಿ ನಗುತ್ತಾ ಬರುತ್ತಾಳೆ."',ta1:"ಸವಿತಾ ಕೆ.",tr1:"ತಾಯಿ · ಮೈಸೂರು · ತರಗತಿ 3",ts2:'"ನನ್ನ ಮಗ ತರಗತಿ 7. ಗಣಿತ ನನಗೆ ಆಗಲ್ಲ. Edupanion ತುಂಬಾ ಸರಳವಾಗಿ ಹೇಳುತ್ತಾರೆ!"',ta2:"ರವಿ ರೆಡ್ಡಿ",tr2:"ತಂದೆ · ಬೆಂಗಳೂರು · ತರಗತಿ 7",ts3:'"ಎಲ್ಲ ಮಾತುಕತೆ ಶೈಕ್ಷಣಿಕ ಮತ್ತು ಮೃದು. ಮಗು ಈಗ ಪಠ್ಯದ ಕಡೆ ಖುಷಿಯಿಂದ ಹೋಗುತ್ತದೆ."',ta3:"ಮೀನಾ ಶರ್ಮಾ",tr3:"ತಾಯಿ · ಹುಬ್ಬಳ್ಳಿ · ತರಗತಿ 5",fq_lbl:"ಸಾಮಾನ್ಯ ಪ್ರಶ್ನೆಗಳು",fq_ttl:"ಪೋಷಕರು ಕೇಳುವ ಪ್ರಶ್ನೆಗಳು",q1:"AI ಚಾಟ್‌ಬಾಟ್ ಅಥವಾ ನಿಜವಾದ ವ್ಯಕ್ತಿ?",a1:"ನಿಜವಾದ ವ್ಯಕ್ತಿ. ಪ್ರತಿ ಸಂದೇಶ ಮನುಷ್ಯರಿಂದ ಬರುತ್ತದೆ.",q2:"WhatsApp ನಲ್ಲಿ ಸುರಕ್ಷಿತವೇ?",a2:"ಸಂಪೂರ್ಣ ಸುರಕ್ಷಿತ. ಎಲ್ಲ ಮಾತುಕತೆ ಶೈಕ್ಷಣಿಕ. ಪೋಷಕರು ಯಾವಾಗ ಬೇಕಾದರೂ ನೋಡಬಹುದು.",q3:"ಯಾವ ತರಗತಿ ಮತ್ತು ಬೋರ್ಡ್?",a3:"ತರಗತಿ 1 ರಿಂದ 8 — CBSE, ICSE, State Board. ಕನ್ನಡ ಮತ್ತು English ಮಾಧ್ಯಮ.",q4:"ನೇರ ಉತ್ತರ ಕೊಡುತ್ತೀರಾ?",a4:"ಎಂದಿಗೂ ಇಲ್ಲ. ಮಗುವೇ ಯೋಚಿಸಿ ಬಿಡಿಸಲು ಕಲಿಸುತ್ತೇವೆ.",q5:"ಪಾವತಿ ಹೇಗೆ?",a5:"UPI — Google Pay, PhonePe, Paytm. ತಿಂಗಳ ಪಾವತಿ. ಯಾವ ಒಪ್ಪಂದ ಇಲ್ಲ. 3 ದಿನ ಉಚಿತ.",q6:"ಮಗು ChatGPT ಬಳಸುತ್ತದೆ. ವ್ಯತ್ಯಾಸ ಏನು?",a6:"ChatGPT ನೇರ ಉತ್ತರ ಕೊಡುತ್ತದೆ. ಪರೀಕ್ಷೆಯಲ್ಲಿ ChatGPT ಇರಲ್ಲ. Edupanion ಯೋಚಿಸಲು ಕಲಿಸುತ್ತದೆ.",cta_h:"ಇಂದೇ ಉಚಿತ ಟ್ರಯಲ್ ಪ್ರಾರಂಭಿಸಿ 🌟",cta_p:"3 ದಿನ, ಯಾವ ಪಾವತಿ ಇಲ್ಲ. WhatsApp ನಲ್ಲಿ ಮೆಸೇಜ್ ಕಳುಹಿಸಿ.",cta_kn:"ಇಂದೇ ಪ್ರಾರಂಭಿಸಿ — ಮೊದಲ 3 ದಿನ ಉಚಿತ 🙏",cta_btn:"WhatsApp ನಲ್ಲಿ ಉಚಿತ ಟ್ರಯಲ್",ft:"ಭಾರತೀಯ ಶಾಲಾ ಮಕ್ಕಳಿಗೆ ಸಂಜೆ ಅಧ್ಯಯನ ಬೆಂಬಲ. © 2026 edupanion.in"}
 };
 
-let currentLang = 'en';
-
-function setLang(lang) {
-  currentLang = lang;
-  const t = translations[lang];
-
-  // Update body class
-  document.body.className = 'lang-' + lang;
-
-  // Update buttons
-  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-  document.getElementById('btn-' + lang).classList.add('active');
-
-  // Update all data-key elements
-  document.querySelectorAll('[data-key]').forEach(el => {
-    const key = el.getAttribute('data-key');
-    if (t[key] !== undefined) {
-      el.innerHTML = t[key];
-    }
+function setLang(l){
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    if((l==='en'&&b.textContent.includes('English'))||(l==='hi'&&b.textContent.includes('हिन्दी'))||(l==='kn'&&b.textContent.includes('ಕನ್ನಡ')))
+      b.classList.add('active');
   });
-
-  // Swap chat mock
-  document.getElementById('chat-en').style.display = lang === 'en' ? 'block' : 'none';
-  document.getElementById('chat-hi').style.display = lang === 'hi' ? 'block' : 'none';
-  document.getElementById('chat-kn').style.display = lang === 'kn' ? 'block' : 'none';
-
-  // Update html lang attr
-  document.documentElement.lang = lang === 'hi' ? 'hi' : lang === 'kn' ? 'kn' : 'en';
+  document.body.className=l==='kn'?'lang-kn':l==='hi'?'lang-hi':'';
+  const t=T[l];
+  document.querySelectorAll('[data-key]').forEach(el=>{
+    const k=el.getAttribute('data-key');
+    if(t[k]!==undefined)el.innerHTML=t[k];
+  });
+  document.documentElement.lang=l;
 }
 
-function toggleFaq(el) {
-  var isOpen = el.classList.contains('open');
-  document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
-  if (!isOpen) el.classList.add('open');
+function toggleFaq(btn){
+  const item=btn.parentElement;
+  const open=item.classList.contains('open');
+  document.querySelectorAll('.faq').forEach(f=>f.classList.remove('open'));
+  if(!open)item.classList.add('open');
 }
 </script>
 </body>
